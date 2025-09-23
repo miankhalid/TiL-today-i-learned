@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import {
   View, Text, Image, StyleSheet,
   TouchableOpacity, useColorScheme,
-  StatusBar
+  StatusBar, Button,
+  Pressable,
+  ScrollView
 } from 'react-native';
 import {
   SafeAreaProvider,
+  SafeAreaView,
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
 
@@ -15,8 +18,16 @@ function App() {
 
   return (
     <SafeAreaProvider>
+
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
+
+      {/* Wrap entire scroll area in SafeAreaView */}
+      <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom', 'left', 'right']}>
+        <ScrollView>
+          <AppContent />
+        </ScrollView>
+      </SafeAreaView>
+
     </SafeAreaProvider>
   );
 }
@@ -48,6 +59,9 @@ function AppContent() {
   };
 
   return (
+    // Respecting safe area using insets
+    // <View style={[styles.cardContainer, {paddingTop: safeAreaInsets.top}]}>
+
     <View style={styles.cardContainer}>
 
       {/* Profile Info Section */}
@@ -93,11 +107,30 @@ function AppContent() {
           </Text>
         </TouchableOpacity>
 
+        {/* Interactive button */}
         <TouchableOpacity style={[styles.button, styles.messageButton]}>
           <Text style={styles.messageButtonText}>Message</Text>
         </TouchableOpacity>
 
       </View>
+
+      {/* Simple button */}
+      <Button style={styles.messageButton} title='Button' onPress={() => console.log("Button pressed")} />
+
+      {/* Interactive pressable */}
+      <Pressable
+        onPress={() => console.log("Pressed!")}
+        style={({ pressed }) => ({
+          backgroundColor: pressed ? "#166645" : "#1c7c54", // darker when pressed
+          padding: 14,
+          borderRadius: 12,
+          alignItems: "center",
+          marginTop: 20,
+          flex: 0.25
+        })}
+      >
+        <Text style={{ color: "white", fontSize: 16 }}>Pressable</Text>
+      </Pressable>
     </View>
   );
 };
@@ -110,10 +143,10 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'white',
     margin: 20,
     borderRadius: 20,
-    shadowColor: "#000",
+    shadowColor: "#023913ff",
     shadowOffset: {
       width: 0,
       height: 4,
@@ -133,7 +166,7 @@ const styles = StyleSheet.create({
     borderRadius: 60, // Makes the image circular
     marginBottom: 15,
     borderWidth: 3,
-    borderColor: '#007BFF',
+    borderColor: '#166e1aff',
   },
   name: {
     fontSize: 26,
@@ -177,6 +210,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginTop: 25,
+    marginBottom: 25,
   },
   button: {
     paddingVertical: 12,
@@ -187,7 +221,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
   },
   followButton: {
-    backgroundColor: '#007BFF',
+    backgroundColor: '#004308ff',
   },
   unfollowButton: {
     backgroundColor: '#EAEAEA',

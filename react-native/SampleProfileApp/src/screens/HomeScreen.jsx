@@ -31,6 +31,14 @@ const HomeScreen = ({ navigation }) => {
                 >
                     <Text style={styles.buttonText}>Lifecycle Demo</Text>
                 </TouchableOpacity>
+
+                <TouchableOpacity
+                    style={styles.button}
+                    accessibilityRole="button"
+                    onPress={() => navigation.navigate('ThemeDemo')}
+                >
+                    <Text style={styles.buttonText}>Theme & Styles Demo</Text>
+                </TouchableOpacity>
             </View>
         </SafeAreaView>
     );

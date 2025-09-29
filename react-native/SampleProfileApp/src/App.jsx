@@ -9,6 +9,7 @@ import ProfileScreen from './screens/ProfileScreen';
 import LifecycleDemo from './screens/LifecycleDemo';
 import ThemeDemoScreen from './screens/ThemeDemoScreen';
 import Tabs from './screens/TabsScreen';
+import TodoTabs from './screens/todo-app/TodoTabs';
 
 const Stack = createNativeStackNavigator();
 
@@ -52,6 +53,11 @@ export default function App() {
                 <Stack.Screen
                     name="Tabs"
                     component={Tabs}
+                />
+                <Stack.Screen
+                    name="TodoApp"
+                    component={TodoTabs}
+                    options={{ headerShown: false }}
                 />
             </Stack.Navigator>
         </NavigationContainer>

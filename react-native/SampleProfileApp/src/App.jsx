@@ -8,6 +8,7 @@ import HomeScreen from './screens/HomeScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import LifecycleDemo from './screens/LifecycleDemo';
 import ThemeDemoScreen from './screens/ThemeDemoScreen';
+import Tabs from './screens/TabsScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -47,6 +48,10 @@ export default function App() {
                     name="ThemeDemo"
                     component={ThemeDemoScreen}
                     options={{ title: 'Theme Demo' }}
+                />
+                <Stack.Screen
+                    name="Tabs"
+                    component={Tabs}
                 />
             </Stack.Navigator>
         </NavigationContainer>

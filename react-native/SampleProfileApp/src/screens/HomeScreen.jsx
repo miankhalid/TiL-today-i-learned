@@ -39,6 +39,14 @@ const HomeScreen = ({ navigation }) => {
                 >
                     <Text style={styles.buttonText}>Theme & Styles Demo</Text>
                 </TouchableOpacity>
+
+                <TouchableOpacity
+                    style={styles.button}
+                    accessibilityRole="button"
+                    onPress={() => navigation.navigate('Tabs')}
+                >
+                    <Text style={styles.buttonText}>Tabs Demo</Text>
+                </TouchableOpacity>
             </View>
         </SafeAreaView>
     );

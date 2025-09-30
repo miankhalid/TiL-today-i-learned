@@ -24,7 +24,7 @@ export default function Tabs() {
                 {() => <HomeTab todos={todos} setTodos={setTodos} />}
             </Tab.Screen>
             <Tab.Screen name="Add Todo">
-                {() => <AddTab setTodos={setTodos} />}
+                {() => <AddTab todos={todos} setTodos={setTodos} />}
             </Tab.Screen>
             <Tab.Screen name="Completed">
                 {() => <CompletedTab todos={todos} />}

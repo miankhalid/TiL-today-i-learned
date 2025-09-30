@@ -9,7 +9,7 @@ import ProfileScreen from './screens/ProfileScreen';
 import LifecycleDemo from './screens/LifecycleDemo';
 import ThemeDemoScreen from './screens/ThemeDemoScreen';
 import Tabs from './screens/TabsScreen';
-import TodoTabs from './screens/todo-app/TodoTabs';
+import TodoTabs from './todo-app/TodoTabs';
 
 const Stack = createNativeStackNavigator();
 

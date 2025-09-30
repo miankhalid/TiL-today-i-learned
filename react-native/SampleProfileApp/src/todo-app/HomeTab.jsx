@@ -16,6 +16,17 @@ export default function HomeTab({ todos, setTodos }) {
     setTodos(todos.filter(item => item.id !== todo.id))
   }
 
+  const editTodo = (id, newText) => {
+    setTodos(
+      todos.map(item => {
+        if (item.id === id) {
+          item.updateText(newText);
+        }
+        return item;
+      })
+    )
+  }
+
   const incompleteTodos = todos.filter(item => !item.done);
 
   return (
@@ -28,6 +39,7 @@ export default function HomeTab({ todos, setTodos }) {
             todo={item}
             onComplete={() => markComplete(item)}
             onDelete={() => deleteTodo(item)}
+            onEdit={editTodo}
           />
         ))}
       </View>

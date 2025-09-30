@@ -10,7 +10,7 @@ export default function CompletedTab({ todos }) {
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.heading3}>⚙️ Completed Todos</Text>
+      <Text style={[styles.heading3, styles.listItem]}>⚙️ Completed Todos</Text>
       {completeTodos.map(item => (
         <Text key={item.id} style={styles.listItem} >{item.text}</Text>
       ))}

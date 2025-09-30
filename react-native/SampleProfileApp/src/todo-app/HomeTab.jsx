@@ -30,19 +30,17 @@ export default function HomeTab({ todos, setTodos }) {
   const incompleteTodos = todos.filter(item => !item.done);
 
   return (
-    <ScrollView style={styles.scrollView}>
-      <View style={styles.container}>
-        <Text>📌 TODO Items list</Text>
-        {incompleteTodos.map(item => (
-          <TodoItem
-            key={item.id}
-            todo={item}
-            onComplete={() => markComplete(item)}
-            onDelete={() => deleteTodo(item)}
-            onEdit={editTodo}
-          />
-        ))}
-      </View>
+    <ScrollView style={styles.container}>
+      <Text style={[styles.heading3, styles.listItem]}>📌 TODO Items list</Text>
+      {incompleteTodos.map(item => (
+        <TodoItem
+          key={item.id}
+          todo={item}
+          onComplete={() => markComplete(item)}
+          onDelete={() => deleteTodo(item)}
+          onEdit={editTodo}
+        />
+      ))}
     </ScrollView>
   );
 }

@@ -15,37 +15,45 @@ export default function TodoItem({ todo, onComplete, onDelete, onEdit }) {
     }
 
     return (
-        <View style={styles.row}>
+        <View style={styles.listItem}>
             {!isEditing ? (
-                <>
-                    <Text style={styles.body} >{todo.text}</Text>
+                <View style={styles.row}>
+                    <Text style={styles.body}>{todo.text}</Text>
 
-                    <TouchableOpacity style={styles.button} onPress={() => { setIsEditing(true); }}>
-                        <Text style={styles.buttonText}>Edit</Text>
-                    </TouchableOpacity>
+                    <View style={styles.actions}>
+                        <TouchableOpacity style={styles.button} onPress={() => setIsEditing(true)}>
+                            <Text style={styles.buttonText}>✏️</Text>
+                        </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.button} onPress={onComplete}>
-                        <Text style={styles.buttonText}>Complete</Text>
-                    </TouchableOpacity>
+                        <TouchableOpacity style={styles.button} onPress={onComplete}>
+                            <Text style={styles.buttonText}>✅</Text>
+                        </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.button} onPress={onDelete}>
-                        <Text style={styles.buttonText}>❌</Text>
-                    </TouchableOpacity>
-                </>
+                        <TouchableOpacity style={styles.button} onPress={onDelete}>
+                            <Text style={styles.buttonText}>❌</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
             ) : (
-                <>
+                <View style={styles.row}>
                     <TextInput
                         style={styles.input}
                         value={editedText}
                         onChangeText={setEditedText}
+                        multiline={true}
+                        numberOfLines={2}
                     />
-                    <TouchableOpacity style={styles.button} onPress={saveEdit}>
-                        <Text style={styles.buttonText}>Save</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={() => setIsEditing(false)}>
-                        <Text style={styles.buttonText}>Cancel</Text>
-                    </TouchableOpacity>
-                </>
+
+                    <View style={styles.actions}>
+                        <TouchableOpacity style={styles.button} onPress={saveEdit}>
+                            <Text style={styles.buttonText}>💾</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.button} onPress={() => setIsEditing(false)}>
+                            <Text style={styles.buttonText}>❌</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
             )
             }
         </View >

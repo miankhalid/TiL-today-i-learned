@@ -15,27 +15,28 @@ export default function AddTab({ todos, setTodos }) {
       setError("⚠️ Can't add an empty todo");
       return;
     }
-    setTodos([...todos, new Todo(todos.length + 1, itemText)])
+    setTodos([...todos, new Todo(todos.length + 1, itemText.trim())])
     setItemText("");
     setError("")
   }
 
   return (
     <View style={styles.container}>
-      <Text style={[styles.heading3, styles.listItem]}>⚙️ Add a todo item</Text>
+      <Text style={[styles.heading3, styles.listItem]}>➕ Add a todo item</Text>
+
+      {error ? (<Text style={[styles.heading3, styles.listItem]}>{error}</Text>) : null}
 
       <TextInput
         placeholder="Enter todo"
         style={styles.input}
         value={itemText}
+        multiline={true}
         onChangeText={setItemText}
       />
 
       <TouchableOpacity style={styles.button} onPress={addTodoItem}>
         <Text style={styles.buttonText}>Add</Text>
       </TouchableOpacity>
-
-      {error ? (<Text style={[styles.heading3, styles.listItem]}>{error}</Text>) : null}
 
     </View>
   );

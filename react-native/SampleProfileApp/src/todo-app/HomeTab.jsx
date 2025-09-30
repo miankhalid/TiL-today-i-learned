@@ -12,6 +12,10 @@ export default function HomeTab({ todos, setTodos }) {
     setTodos([...todos])
   }
 
+  const deleteTodo = (todo) => {
+    setTodos(todos.filter(item => item.id !== todo.id))
+  }
+
   const incompleteTodos = todos.filter(item => !item.done);
 
   return (
@@ -22,7 +26,9 @@ export default function HomeTab({ todos, setTodos }) {
           <TodoItem
             key={item.id}
             todo={item}
-            onComplete={() => markComplete(item)} />
+            onComplete={() => markComplete(item)}
+            onDelete={() => deleteTodo(item)}
+          />
         ))}
       </View>
     </ScrollView>

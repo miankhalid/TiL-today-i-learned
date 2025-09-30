@@ -1,15 +1,19 @@
 import React from 'react';
-import { View, Text } from 'react-native';
-import { useColorScheme } from 'react-native';
+import { ScrollView, Text, useColorScheme } from 'react-native';
 import createStyles from '../themes/Styles';
 
-export default function CompletedTab() {
+export default function CompletedTab({ todos }) {
   const scheme = useColorScheme(); // "light" or "dark"
   const styles = createStyles(scheme);
 
+  const completeTodos = todos.filter(item => item.done);
+
   return (
-    <View style={styles.container}>
-      <Text>⚙️ Completed Screen</Text>
-    </View>
+    <ScrollView style={styles.container}>
+      <Text style={styles.heading3}>⚙️ Completed Todos</Text>
+      {completeTodos.map(item => (
+        <Text key={item.id} style={styles.listItem} >{item.text}</Text>
+      ))}
+    </ScrollView>
   );
 }

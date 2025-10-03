@@ -7,27 +7,7 @@ import { useTodos } from './context/useTodos';
 export default function HomeTab() {
   const scheme = useColorScheme(); // "light" or "dark"
   const styles = createStyles(scheme);
-  const { todos, setTodos } = useTodos();
-
-  const markComplete = (todo) => {
-    todo.markDone();
-    setTodos([...todos])
-  }
-
-  const deleteTodo = (todo) => {
-    setTodos(todos.filter(item => item.id !== todo.id))
-  }
-
-  const editTodo = (id, newText) => {
-    setTodos(
-      todos.map(item => {
-        if (item.id === id) {
-          item.updateText(newText);
-        }
-        return item;
-      })
-    )
-  }
+  const { todos, markComplete, deleteTodo, editTodo } = useTodos();
 
   const incompleteTodos = todos.filter(item => !item.done);
 

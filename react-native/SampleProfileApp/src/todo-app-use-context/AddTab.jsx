@@ -2,24 +2,23 @@ import React, { useState } from 'react';
 import { Text, TextInput, TouchableOpacity, useColorScheme, View } from 'react-native';
 import createStyles from '../themes/Styles';
 import { useTodos } from './context/useTodos';
-import Todo from './models/Todo';
 
 export default function AddTab() {
   const scheme = useColorScheme(); // "light" or "dark"
   const styles = createStyles(scheme);
-  const { todos, setTodos } = useTodos();
+  const { addTodo } = useTodos();
 
   const [itemText, setItemText] = useState("");
   const [error, setError] = useState("");
 
-  const addTodoItem = () => {
+  const handleAddItem = () => {
     if (itemText.trim().length === 0) {
       setError("⚠️ Can't add an empty todo");
       return;
     }
-    setTodos([...todos, new Todo(todos.length + 1, itemText.trim())])
+    addTodo(itemText.trim());
     setItemText("");
-    setError("")
+    setError("");
   }
 
   return (
@@ -36,7 +35,7 @@ export default function AddTab() {
         onChangeText={setItemText}
       />
 
-      <TouchableOpacity style={styles.button} onPress={addTodoItem}>
+      <TouchableOpacity style={styles.button} onPress={handleAddItem}>
         <Text style={styles.buttonText}>Add</Text>
       </TouchableOpacity>
 

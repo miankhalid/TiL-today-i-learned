@@ -1,12 +1,12 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { ScrollView, Text, useColorScheme } from 'react-native';
 import createStyles from '../themes/Styles';
-import { TodoContext } from './context/TodoContext';
+import { useTodos } from './context/useTodos';
 
 export default function CompletedTab() {
   const scheme = useColorScheme(); // "light" or "dark"
   const styles = createStyles(scheme);
-  const { todos } = useContext(TodoContext);
+  const { todos } = useTodos();
 
   const completeTodos = todos.filter(item => item.done);
 

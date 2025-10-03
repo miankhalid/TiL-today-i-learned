@@ -1,13 +1,13 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Text, TextInput, TouchableOpacity, useColorScheme, View } from 'react-native';
 import createStyles from '../themes/Styles';
-import { TodoContext } from './context/TodoContext';
+import { useTodos } from './context/useTodos';
 import Todo from './models/Todo';
 
 export default function AddTab() {
   const scheme = useColorScheme(); // "light" or "dark"
   const styles = createStyles(scheme);
-  const { todos, setTodos } = useContext(TodoContext);
+  const { todos, setTodos } = useTodos();
 
   const [itemText, setItemText] = useState("");
   const [error, setError] = useState("");

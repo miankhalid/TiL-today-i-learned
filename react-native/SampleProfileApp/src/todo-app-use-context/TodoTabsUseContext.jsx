@@ -1,12 +1,11 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import React, { useState } from 'react';
+import React from 'react';
 import { useColorScheme } from 'react-native';
 import createStyles from '../themes/Styles';
 import AddTab from './AddTab';
 import CompletedTab from './CompletedTab';
-import { TodoContext } from './context/TodoContext';
+import { TodoProvider } from './context/TodoProvider';
 import HomeTab from './HomeTab';
-import Todo from './models/Todo';
 
 const Tab = createBottomTabNavigator();
 
@@ -14,13 +13,8 @@ export default function Tabs() {
     const scheme = useColorScheme(); // "light" or "dark"
     const styles = createStyles(scheme);
 
-    const [todos, setTodos] = useState([
-        new Todo(1, "Item # 1"),
-        new Todo(2, "Item # 2"),
-    ]);
-
     return (
-        <TodoContext.Provider value={{ todos, setTodos }}>
+        <TodoProvider>
             <Tab.Navigator>
                 <Tab.Screen name="Home">
                     {() => <HomeTab />}
@@ -32,6 +26,6 @@ export default function Tabs() {
                     {() => <CompletedTab />}
                 </Tab.Screen>
             </Tab.Navigator>
-        </TodoContext.Provider>
+        </TodoProvider>
     );
 }

@@ -1,13 +1,13 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { ScrollView, Text, useColorScheme } from 'react-native';
 import createStyles from '../themes/Styles';
 import TodoItem from './components/TodoItem';
-import { TodoContext } from './context/TodoContext';
+import { useTodos } from './context/useTodos';
 
 export default function HomeTab() {
   const scheme = useColorScheme(); // "light" or "dark"
   const styles = createStyles(scheme);
-  const { todos, setTodos } = useContext(TodoContext);
+  const { todos, setTodos } = useTodos();
 
   const markComplete = (todo) => {
     todo.markDone();

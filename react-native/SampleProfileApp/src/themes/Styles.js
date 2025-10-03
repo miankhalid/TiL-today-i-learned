@@ -24,7 +24,13 @@ const createStyles = (mode = 'light') => {
     },
 
     // Layout
-    row: { flexDirection: 'row', alignItems: 'center' },
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: spacing.sm,
+      paddingHorizontal: spacing.xs,
+      flexWrap: 'nowrap', // ensure row doesn't wrap; text will wrap inside its box
+    },
     rowBetween: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -36,19 +42,35 @@ const createStyles = (mode = 'light') => {
     heading1: { ...typography.h1, color: colors.text },
     heading2: { ...typography.h2, color: colors.text },
     heading3: { ...typography.h3, color: colors.text },
-    body: { ...typography.body, color: colors.textSecondary },
+    body: {
+      ...typography.body,
+      color: colors.textSecondary,
+      flex: 1,           // take remaining space
+      flexShrink: 1,     // allow shrinking so it doesn't push buttons away
+      minWidth: 0,       // important on some RN versions so flexShrink works correctly
+      flexWrap: 'wrap',  // allow multi-line text
+    },
     bodyBold: { ...typography.bodyBold, color: colors.text },
     small: { ...typography.small, color: colors.textMuted },
     tiny: { ...typography.tiny, color: colors.textMuted },
 
+    // Actions container (group buttons)
+    actions: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      flexShrink: 0, // don't let the button group shrink
+    },
+
     // Buttons / Pressables
     button: {
       backgroundColor: colors.primary,
-      paddingVertical: spacing.md,
-      paddingHorizontal: spacing.xl,
-      borderRadius: radius.md,
+      paddingVertical: spacing.xs,
+      paddingHorizontal: spacing.sm,
+      borderRadius: radius.sm,
       alignItems: 'center',
-      margin: 10,
+      justifyContent: 'center',
+      marginLeft: spacing.xs, // minimal spacing between buttons
+      flexShrink: 0, // ensure buttons don't shrink
     },
     buttonText: { ...typography.bodyBold, color: colors.onPrimary },
     buttonSecondary: {
@@ -71,11 +93,15 @@ const createStyles = (mode = 'light') => {
       borderWidth: 1,
       borderColor: colors.border,
       borderRadius: radius.sm,
-      padding: spacing.md,
+      padding: spacing.sm,
       fontSize: typography.body.fontSize,
       color: colors.text,
       backgroundColor: colors.surface,
-      marginVertical: spacing.sm,
+      marginVertical: spacing.xs,
+      flex: 1,           // take remaining space like body text
+      flexShrink: 1,     // allow shrinking so buttons stay visible
+      minWidth: 0,
+      textAlignVertical: 'top', // for multiline text input vertical alignment
     },
 
     // Lists

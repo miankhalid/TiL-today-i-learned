@@ -47,6 +47,14 @@ const HomeScreen = ({ navigation }) => {
                 >
                     <Text style={styles.buttonText}>Tabs Demo</Text>
                 </TouchableOpacity>
+
+                <TouchableOpacity
+                    style={styles.button}
+                    accessibilityRole="button"
+                    onPress={() => navigation.navigate('TodoApp')}
+                >
+                    <Text style={styles.buttonText}>Todo App</Text>
+                </TouchableOpacity>
             </View>
         </SafeAreaView>
     );

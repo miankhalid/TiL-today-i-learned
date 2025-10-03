@@ -4,6 +4,7 @@ import { useColorScheme } from 'react-native';
 import createStyles from '../themes/Styles';
 import AddTab from './AddTab';
 import CompletedTab from './CompletedTab';
+import { TodoContext } from './context/TodoContext';
 import HomeTab from './HomeTab';
 import Todo from './models/Todo';
 
@@ -19,16 +20,18 @@ export default function Tabs() {
     ]);
 
     return (
-        <Tab.Navigator>
-            <Tab.Screen name="Home">
-                {() => <HomeTab todos={todos} setTodos={setTodos} />}
-            </Tab.Screen>
-            <Tab.Screen name="Add Todo">
-                {() => <AddTab todos={todos} setTodos={setTodos} />}
-            </Tab.Screen>
-            <Tab.Screen name="Completed">
-                {() => <CompletedTab todos={todos} />}
-            </Tab.Screen>
-        </Tab.Navigator>
+        <TodoContext.Provider value={{ todos, setTodos }}>
+            <Tab.Navigator>
+                <Tab.Screen name="Home">
+                    {() => <HomeTab />}
+                </Tab.Screen>
+                <Tab.Screen name="Add Todo">
+                    {() => <AddTab />}
+                </Tab.Screen>
+                <Tab.Screen name="Completed">
+                    {() => <CompletedTab />}
+                </Tab.Screen>
+            </Tab.Navigator>
+        </TodoContext.Provider>
     );
 }

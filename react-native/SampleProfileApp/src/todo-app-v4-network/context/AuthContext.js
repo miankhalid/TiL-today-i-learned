@@ -58,11 +58,16 @@ const AuthProvider = ({ children }) => {
     try {
       console.log('Attempting login for user:', username);
       const response = await apiLogin(username, password);
-      const { token } = response.data;
-      await AsyncStorage.setItem('token', token);
-      const userResponse = await getUser(token);
+      const { accessToken } = response.data;
+
+      if (!accessToken) {
+        throw new Error('Access token not found in login response');
+      }
+
+      await AsyncStorage.setItem('token', accessToken);
+      const userResponse = await getUser(accessToken);
       console.log('Login successful for user:', userResponse.data.username);
-      dispatch({ type: 'LOGIN_SUCCESS', payload: { user: userResponse.data, token } });
+      dispatch({ type: 'LOGIN_SUCCESS', payload: { user: userResponse.data, token: accessToken } });
     } catch (error) {
       console.error('Login failed:', error.response ? error.response.data : error.message);
       dispatch({ type: 'LOGIN_FAILURE', payload: 'Invalid credentials' });

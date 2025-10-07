@@ -1,11 +1,14 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useEffect, useState } from 'react';
 import Todo from '../models/Todo';
 import { TodoContext } from './TodoContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const todoReducer = (state, action) => {
     switch (action.type) {
+        case 'SET_TODOS':
+            return action.payload;
         case 'ADD_TODO':
-            return [...state, new Todo(state.length + 1, action.payload)];
+            return [...state, new Todo(Date.now(), action.payload)];
         case 'MARK_COMPLETE':
             return state.map(todo =>
                 todo.id === action.payload ? todo.markDone() : todo
@@ -22,10 +25,38 @@ const todoReducer = (state, action) => {
 };
 
 export const TodoProvider = ({ children }) => {
-    const [todos, dispatch] = useReducer(todoReducer, [
-        new Todo(1, "Item # 1"),
-        new Todo(2, "Item # 2"),
-    ]);
+    const [todos, dispatch] = useReducer(todoReducer, []);
+    const [initialLoad, setInitialLoad] = useState(true);
+
+    // Load
+    useEffect(() => {
+        const loadTodos = async () => {
+            try {
+                const item = await AsyncStorage.getItem('todos');
+                if (item) {
+                    const loadedTodos = JSON.parse(item);
+                    const todoInstances = loadedTodos.map(t => new Todo(t.id, t.text, t.done));
+                    dispatch({ type: 'SET_TODOS', payload: todoInstances });
+                }
+            } catch (error) {
+                console.error("Error loading todos from AsyncStorage:", error);
+            } finally {
+                setInitialLoad(false);
+            }
+        };
+        loadTodos();
+    }, []); // Run only once on mount
+
+    // Save
+    useEffect(() => {
+        if (!initialLoad) {
+            try {
+                AsyncStorage.setItem('todos', JSON.stringify(todos));
+            } catch (error) {
+                console.error("Error saving todos to AsyncStorage:", error);
+            }
+        }
+    }, [todos, initialLoad]);
 
     const addTodo = (text) => {
         dispatch({ type: 'ADD_TODO', payload: text });

@@ -36,8 +36,10 @@ const AuthProvider = ({ children }) => {
       const token = await AsyncStorage.getItem('token');
       if (token) {
         try {
+          console.log('Found token, attempting to log in...');
           const response = await getUser(token);
           dispatch({ type: 'LOGIN_SUCCESS', payload: { user: response.data, token } });
+          console.log('Auto-login successful for user:', response.data.username);
         } catch (error) {
           console.error('Failed to fetch user with stored token', error);
           await AsyncStorage.removeItem('token');
@@ -54,12 +56,15 @@ const AuthProvider = ({ children }) => {
   const login = async (username, password) => {
     dispatch({ type: 'LOGIN_START' });
     try {
+      console.log('Attempting login for user:', username);
       const response = await apiLogin(username, password);
       const { token } = response.data;
       await AsyncStorage.setItem('token', token);
       const userResponse = await getUser(token);
+      console.log('Login successful for user:', userResponse.data.username);
       dispatch({ type: 'LOGIN_SUCCESS', payload: { user: userResponse.data, token } });
     } catch (error) {
+      console.error('Login failed:', error.response ? error.response.data : error.message);
       dispatch({ type: 'LOGIN_FAILURE', payload: 'Invalid credentials' });
     }
   };
@@ -67,16 +72,24 @@ const AuthProvider = ({ children }) => {
   const signup = async (userData) => {
     dispatch({ type: 'LOGIN_START' });
     try {
-      await apiSignup(userData);
+      console.log('Attempting signup for user:', userData.firstName);
+      const response = await apiSignup(userData);
+      console.log('Signup successful. New user added:', response.data);
       dispatch({ type: 'SIGNUP_SUCCESS' });
+      // Here you might want to automatically log the user in, or prompt them to go to the login page.
+      // For now, we just signify success.
     } catch (error) {
+      console.error('Signup failed:', error.response ? error.response.data : error.message);
       dispatch({ type: 'LOGIN_FAILURE', payload: 'Signup failed' });
     }
   };
 
   const logout = async () => {
+    const username = state.user?.username;
+    console.log(`Logging out user: ${username || ''}...`);
     await AsyncStorage.removeItem('token');
     dispatch({ type: 'LOGOUT' });
+    console.log('User logged out.');
   };
 
   return (

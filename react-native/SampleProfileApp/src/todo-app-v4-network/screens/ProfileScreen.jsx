@@ -5,7 +5,7 @@ import createStyles from '../themes/Styles';
 
 const styles = createStyles();
 
-const ProfileScreen = () => {
+const ProfileScreen = ({ navigation }) => {
   const { user, logout } = useContext(AuthContext);
 
   useEffect(() => {
@@ -30,7 +30,9 @@ const ProfileScreen = () => {
       <Text style={styles.bodyBold}>Username: {user.username}</Text>
       <Text style={styles.body}>Email: {user.email}</Text>
       <Text style={styles.body}>Gender: {user.gender}</Text>
-      <View style={{ marginTop: 20 }} />
+      <View style={styles.spacer} />
+      <Button title="Go to Todos" onPress={() => navigation.navigate('Todo')} />
+      <View style={styles.spacer} />
       <Button title="Logout" onPress={logout} />
     </View>
   );

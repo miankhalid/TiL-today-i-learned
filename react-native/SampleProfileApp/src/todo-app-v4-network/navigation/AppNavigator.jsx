@@ -5,15 +5,18 @@ import { AuthContext } from '../context/AuthContext';
 import LoginScreen from '../screens/LoginScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import SignupScreen from '../screens/SignupScreen';
+import TodoScreen from '../screens/TodoScreen';
+import createStyles from '../themes/Styles';
 
 const Stack = createNativeStackNavigator();
+const styles = createStyles();
 
 const AppNavigator = () => {
   const { token, isLoading } = useContext(AuthContext);
 
   if (isLoading) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={styles.container}>
         <Text>Loading...</Text>
       </View>
     );
@@ -22,7 +25,10 @@ const AppNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {token ? (
-        <Stack.Screen name="Profile" component={ProfileScreen} />
+        <>
+          <Stack.Screen name="Profile" component={ProfileScreen} />
+          <Stack.Screen name="Todo" component={TodoScreen} />
+        </>
       ) : (
         <>
           <Stack.Screen name="Login" component={LoginScreen} />

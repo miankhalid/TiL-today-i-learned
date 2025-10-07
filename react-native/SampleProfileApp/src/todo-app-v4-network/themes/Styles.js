@@ -47,7 +47,6 @@ const createStyles = (mode = 'light') => {
     body: {
       ...typography.body,
       color: colors.textSecondary,
-      flex: 1,           // take remaining space
       flexShrink: 1,     // allow shrinking so it doesn't push buttons away
       minWidth: 0,       // important on some RN versions so flexShrink works correctly
       flexWrap: 'wrap',  // allow multi-line text
@@ -163,15 +162,68 @@ const createStyles = (mode = 'light') => {
       backgroundColor: colors.border,
       marginVertical: spacing.md,
     },
+    spacer: {
+      marginVertical: spacing.md,
+    },
     shadowSm: { ...shadow.sm },
     shadowMd: { ...shadow.md },
     shadowLg: { ...shadow.lg },
+
+    // Lists
+    listContainer: {
+      flex: 1,
+    },
 
     // SectionList
     sectionHeader: {
       backgroundColor: colors.surface,
       padding: spacing.sm,
       fontWeight: 'bold',
+    },
+
+    // Todo Screen
+    todoContainer: {
+      flex: 1,
+      backgroundColor: colors.background,
+      padding: spacing.lg,
+      justifyContent: 'flex-start',
+    },
+    todoItem: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      padding: spacing.md,
+      backgroundColor: colors.surface,
+      borderRadius: radius.sm,
+      marginVertical: spacing.xs,
+      flexWrap: 'nowrap',
+    },
+    todoText: {
+      ...typography.body,
+      color: colors.text,
+      flexShrink: 1,     // allow shrinking so it doesn't push buttons away
+      minWidth: 0,       // important on some RN versions so flexShrink works correctly
+    },
+    todoTextCompleted: {
+      ...typography.body,
+      color: colors.textMuted,
+      textDecorationLine: 'line-through',
+      flexShrink: 1,     // allow shrinking so it doesn't push buttons away
+      minWidth: 0,       // important on some RN versions so flexShrink works correctly
+    },
+    inputContainer: {
+      marginBottom: spacing.lg,
+    },
+    filterContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      marginBottom: spacing.lg,
+    },
+    statsContainer: {
+      marginTop: spacing.lg,
+      padding: spacing.md,
+      backgroundColor: colors.surface,
+      borderRadius: radius.sm,
     },
   });
 };

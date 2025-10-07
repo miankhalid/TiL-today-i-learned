@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { ScrollView, Text, useColorScheme } from 'react-native';
-import createStyles from '../themes/Styles';
+import createStyles from './themes/Styles';
 import { useTodos } from './context/useTodos';
 
 export default function CompletedTab() {

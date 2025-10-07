@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, Text, useColorScheme } from 'react-native';
-import createStyles from '../themes/Styles';
+import createStyles from './themes/Styles';
 import TodoItem from './components/TodoItem';
 import { useTodos } from './context/useTodos';
 

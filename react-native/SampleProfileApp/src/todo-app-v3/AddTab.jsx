@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Text, TextInput, TouchableOpacity, useColorScheme, View } from 'react-native';
-import createStyles from '../themes/Styles';
+import createStyles from './themes/Styles';
 import { useTodos } from './context/useTodos';
 
 export default function AddTab() {

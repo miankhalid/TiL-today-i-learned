@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Text, TextInput, TouchableOpacity, useColorScheme, View } from 'react-native';
-import createStyles from '../../themes/Styles';
+import createStyles from '../themes/Styles';
 
 export default function TodoItem({ todo, onComplete, onDelete, onEdit }) {
     const scheme = useColorScheme(); // "light" or "dark"

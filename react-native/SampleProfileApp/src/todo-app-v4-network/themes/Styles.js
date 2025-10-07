@@ -128,11 +128,11 @@ const createStyles = (mode = 'light') => {
       marginVertical: spacing.md,
     },
     profileImage: {
-        width: 150,
-        height: 150,
-        borderRadius: 75,
-        alignSelf: 'center',
-        marginVertical: spacing.lg,
+      width: 150,
+      height: 150,
+      borderRadius: 75,
+      alignSelf: 'center',
+      marginVertical: spacing.lg,
     },
 
     // GIF
@@ -224,6 +224,9 @@ const createStyles = (mode = 'light') => {
       padding: spacing.md,
       backgroundColor: colors.surface,
       borderRadius: radius.sm,
+    },
+    progress: {
+      marginVertical: 20
     },
   });
 };

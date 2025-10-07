@@ -31,7 +31,9 @@ const ProfileScreen = ({ navigation }) => {
       <Text style={styles.body}>Email: {user.email}</Text>
       <Text style={styles.body}>Gender: {user.gender}</Text>
       <View style={styles.spacer} />
-      <Button title="Go to Todos" onPress={() => navigation.navigate('Todo')} />
+      <Button title="Go to my Todos" onPress={() => navigation.navigate('Todo')} />
+      <View style={styles.spacer} />
+      <Button title="View all todos" onPress={() => navigation.navigate('AllTodos')} />
       <View style={styles.spacer} />
       <Button title="Logout" onPress={logout} />
     </View>

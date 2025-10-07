@@ -6,6 +6,7 @@ import LoginScreen from '../screens/LoginScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import SignupScreen from '../screens/SignupScreen';
 import TodoScreen from '../screens/TodoScreen';
+import AllTodosScreen from '../screens/AllTodosScreen';
 import createStyles from '../themes/Styles';
 
 const Stack = createNativeStackNavigator();
@@ -28,6 +29,7 @@ const AppNavigator = () => {
         <>
           <Stack.Screen name="Profile" component={ProfileScreen} />
           <Stack.Screen name="Todo" component={TodoScreen} />
+          <Stack.Screen name="AllTodos" component={AllTodosScreen} />
         </>
       ) : (
         <>

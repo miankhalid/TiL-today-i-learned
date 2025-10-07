@@ -55,6 +55,14 @@ const HomeScreen = ({ navigation }) => {
                 >
                     <Text style={styles.buttonText}>Todo App</Text>
                 </TouchableOpacity>
+
+                <TouchableOpacity
+                    style={styles.button}
+                    accessibilityRole="button"
+                    onPress={() => navigation.navigate('TodoAppUseContext')}
+                >
+                    <Text style={styles.buttonText}>Todo app with useContext</Text>
+                </TouchableOpacity>
             </View>
         </SafeAreaView>
     );

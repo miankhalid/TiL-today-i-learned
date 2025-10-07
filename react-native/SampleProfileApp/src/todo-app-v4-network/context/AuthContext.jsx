@@ -66,7 +66,7 @@ const AuthProvider = ({ children }) => {
 
       await AsyncStorage.setItem('token', accessToken);
       const userResponse = await getUser(accessToken);
-      console.log('Login successful for user:', userResponse.data.username);
+      console.log('CODE: ', response.status, ' - Login successful for user:', userResponse.data.username);
       dispatch({ type: 'LOGIN_SUCCESS', payload: { user: userResponse.data, token: accessToken } });
     } catch (error) {
       console.error('Login failed:', error.response ? error.response.data : error.message);
@@ -79,13 +79,15 @@ const AuthProvider = ({ children }) => {
     try {
       console.log('Attempting signup for user:', userData.firstName);
       const response = await apiSignup(userData);
-      console.log('Signup successful. New user added:', response.data);
+      console.log('CODE: ', response.status, ' - Signup successful. New user added:', response.data);
       dispatch({ type: 'SIGNUP_SUCCESS' });
+      return response;
       // Here you might want to automatically log the user in, or prompt them to go to the login page.
       // For now, we just signify success.
     } catch (error) {
       console.error('Signup failed:', error.response ? error.response.data : error.message);
       dispatch({ type: 'LOGIN_FAILURE', payload: 'Signup failed' });
+      return error.response;
     }
   };
 

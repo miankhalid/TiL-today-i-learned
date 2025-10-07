@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, TextInput, Button } from 'react-native';
+import { View, Text, TextInput, Button, Alert } from 'react-native';
 import { AuthContext } from '../context/AuthContext';
 import createStyles from '../themes/Styles';
 
@@ -12,9 +12,19 @@ const SignupScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const { signup, error } = useContext(AuthContext);
 
-  const handleSignup = () => {
+  const handleSignup = async () => {
+    if (!firstName || !lastName || !email || !password) {
+      Alert.alert('Error', 'All fields are required.');
+      return;
+    }
     const userData = { firstName, lastName, email, password };
-    signup(userData);
+    const response = await signup(userData);
+    if (response && response.status === 201) {
+      Alert.alert('Success', 'You have successfully registered. Please login to continue.');
+      navigation.navigate('Login');
+    } else {
+      Alert.alert('Error', 'Something went wrong. Please try again.');
+    }
   };
 
   return (

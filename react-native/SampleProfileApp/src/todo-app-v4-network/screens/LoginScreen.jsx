@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, TextInput, Button } from 'react-native';
+import { View, Text, TextInput, Button, Alert } from 'react-native';
 import { AuthContext } from '../context/AuthContext';
 import createStyles from '../themes/Styles';
 
@@ -9,6 +9,15 @@ const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const { login, error } = useContext(AuthContext);
+
+  const handleLogin = () => {
+    if (!username || !password) {
+      Alert.alert('Error', 'Username and password cannot be empty.');
+      return;
+    }
+    login(username, password);
+  };
+
 
   return (
     <View style={styles.container}>
@@ -29,7 +38,7 @@ const LoginScreen = ({ navigation }) => {
       />
       {error && <Text style={styles.errorText}>{error}</Text>}
       <View style={{ marginTop: 10 }} />
-      <Button title="Login" onPress={() => login(username, password)} />
+      <Button title="Login" onPress={handleLogin} />
       <View style={{ marginTop: 10 }} />
       <Button title="Go to Signup" onPress={() => navigation.navigate('Signup')} />
     </View>

@@ -2,8 +2,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import AddTab from './AddTab';
 import CompletedTab from './CompletedTab';
-import { TodoProvider } from './context/TodoProvider';
 import HomeTab from './HomeTab';
+import { TodoProvider } from './context/TodoProvider';
 
 const Tab = createBottomTabNavigator();
 

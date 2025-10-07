@@ -18,8 +18,8 @@ export default function HomeTab() {
         <TodoItem
           key={item.id}
           todo={item}
-          onComplete={() => markComplete(item)}
-          onDelete={() => deleteTodo(item)}
+          onComplete={() => markComplete(item.id)}
+          onDelete={() => deleteTodo(item.id)}
           onEdit={editTodo}
         />
       ))}

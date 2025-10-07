@@ -9,27 +9,27 @@ export const TodoProvider = ({ children }) => {
     ]);
 
     const addTodo = (text) => {
-        setTodos([...todos, new Todo(todos.length + 1, text)]);
+        const updatedTodos = [...todos, new Todo(todos.length + 1, text)];
+        setTodos(updatedTodos);
     };
 
-    const markComplete = (todo) => {
-        todo.markDone();
-        setTodos([...todos]);
+    const markComplete = (id) => {
+        const updatedTodos = todos.map(todo =>
+            todo.id === id ? todo.markDone() : todo
+        );
+        setTodos(updatedTodos);
     };
 
-    const deleteTodo = (todo) => {
-        setTodos(todos.filter(item => item.id !== todo.id));
+    const deleteTodo = (id) => {
+        const updatedTodos = todos.filter(item => item.id !== id);
+        setTodos(updatedTodos);
     };
 
     const editTodo = (id, newText) => {
-        setTodos(
-            todos.map(item => {
-                if (item.id === id) {
-                    item.updateText(newText);
-                }
-                return item;
-            })
+        const updatedTodos = todos.map(item =>
+            item.id === id ? item.updateText(newText) : item
         );
+        setTodos(updatedTodos);
     };
 
     return (

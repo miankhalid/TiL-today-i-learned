@@ -6,11 +6,10 @@ export default class Todo {
     }
 
     markDone() {
-        this.done = true;
-        console.log(`Todo: ${this.text} is ${this.done}`);
+        return new Todo(this.id, this.text, true);
     }
 
     updateText(newText) {
-        this.text = newText;
+        return new Todo(this.id, newText, this.done);
     }
 }

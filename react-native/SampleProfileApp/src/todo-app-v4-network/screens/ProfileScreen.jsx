@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { View, Text, Button, Image } from 'react-native';
 import { AuthContext } from '../context/AuthContext';
 import createStyles from '../themes/Styles';
@@ -8,10 +8,17 @@ const styles = createStyles();
 const ProfileScreen = () => {
   const { user, logout } = useContext(AuthContext);
 
+  useEffect(() => {
+    if (user) {
+      console.log(`Profile screen loaded for user: ${user.username}`);
+    }
+  }, [user]);
+
   if (!user) {
+    // This should ideally not be shown for long due to the navigator's loading state
     return (
       <View style={styles.container}>
-        <Text>Loading...</Text>
+        <Text>Loading profile...</Text>
       </View>
     );
   }

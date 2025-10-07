@@ -1,11 +1,4 @@
-import axios from 'axios';
-
-const apiClient = axios.create({
-  baseURL: 'https://dummyjson.com',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
+import {apiClient} from './client'
 
 export const login = (username, password) => {
   return apiClient.post('/auth/login', {

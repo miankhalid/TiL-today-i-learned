@@ -160,6 +160,13 @@ const createStyles = (mode = 'light') => {
     shadowSm: { ...shadow.sm },
     shadowMd: { ...shadow.md },
     shadowLg: { ...shadow.lg },
+
+    // SectionList
+    sectionHeader: {
+      backgroundColor: colors.surface,
+      padding: spacing.sm,
+      fontWeight: 'bold',
+    },
   });
 };
 

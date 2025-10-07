@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Text, TextInput, TouchableOpacity, useColorScheme, View } from 'react-native';
 import createStyles from '../themes/Styles';
 
-export default function TodoItem({ todo, onComplete, onDelete, onEdit }) {
+export default function TodoItem({ todo, onComplete, onDelete, onEdit, isDeleted }) {
     const scheme = useColorScheme(); // "light" or "dark"
     const styles = createStyles(scheme);
 
@@ -16,7 +16,9 @@ export default function TodoItem({ todo, onComplete, onDelete, onEdit }) {
 
     return (
         <View style={styles.listItem}>
-            {!isEditing ? (
+            {isDeleted ? (
+                <Text style={styles.body}>{todo.text}</Text>
+            ) : !isEditing ? (
                 <View style={styles.row}>
                     <Text style={styles.body}>{todo.text}</Text>
 
@@ -54,8 +56,7 @@ export default function TodoItem({ todo, onComplete, onDelete, onEdit }) {
                         </TouchableOpacity>
                     </View>
                 </View>
-            )
-            }
+            )}
         </View >
     );
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ScrollView, Text, useColorScheme } from 'react-native';
 import createStyles from '../themes/Styles';
 import { useTodos } from './context/useTodos';
@@ -8,7 +8,10 @@ export default function CompletedTab() {
   const styles = createStyles(scheme);
   const { todos } = useTodos();
 
-  const completeTodos = todos.filter(item => item.done);
+  const completeTodos = useMemo(() => {
+    console.log("\n\nMemoizing completed todos ...\n\n");
+    return todos.filter(item => item.done);
+  }, [todos]);
 
   return (
     <ScrollView style={styles.container}>

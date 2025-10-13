@@ -1,38 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, ActivityIndicator } from 'react-native';
-import { getAllTodos } from '../api/todo-api';
+import React, { useEffect } from 'react';
+import { ActivityIndicator, FlatList, Text, View } from 'react-native';
+import { useTodos } from '../context/useTodos';
 import createStyles from '../themes/Styles';
 
 const AllTodosScreen = () => {
   const styles = createStyles();
-  const [todos, setTodos] = useState([]);
-  const [skip, setSkip] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
-
-  const limit = 20; // Fetch 20 items at a time
-
-  const fetchTodos = async () => {
-    if (loading || !hasMore) return;
-
-    setLoading(true);
-    try {
-      const response = await getAllTodos(limit, skip);
-      if (response.data.todos.length > 0) {
-        setTodos(prevTodos => [...prevTodos, ...response.data.todos]);
-        setSkip(prevSkip => prevSkip + limit);
-      } else {
-        setHasMore(false);
-      }
-    } catch (error) {
-      console.error("Failed to fetch todos:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { allTodos, loading, error, fetchAllTodos, resetAllTodos } = useTodos();
 
   useEffect(() => {
-    fetchTodos();
+    console.log("[AllTodosScreen] Component mounted, fetching all todos");
+    resetAllTodos();
+    fetchAllTodos();
+
+    // When the component unmounts, reset the state for the next time it's opened
+    return () => {
+      console.log("[AllTodosScreen] Component umounted, resetting all todos");
+      resetAllTodos();
+    };
   }, []);
 
   const renderFooter = () => {
@@ -43,7 +27,7 @@ const AllTodosScreen = () => {
   const renderItem = ({ item }) => (
     <View style={styles.todoItem}>
       <Text style={item.completed ? styles.todoTextCompleted : styles.todoText}>
-        {item.todo}
+        {`#${item.id} (User: ${item.userId}): ${item.todo}`}
       </Text>
     </View>
   );
@@ -51,11 +35,12 @@ const AllTodosScreen = () => {
   return (
     <View style={styles.todoContainer}>
       <Text style={styles.title}>All Todos</Text>
+      {error && <Text style={styles.errorText}>Error: {error}</Text>}
       <FlatList
-        data={todos}
+        data={allTodos}
         renderItem={renderItem}
         keyExtractor={item => item.id.toString()}
-        onEndReached={fetchTodos}
+        onEndReached={fetchAllTodos}
         onEndReachedThreshold={0.5}
         ListFooterComponent={renderFooter}
       />

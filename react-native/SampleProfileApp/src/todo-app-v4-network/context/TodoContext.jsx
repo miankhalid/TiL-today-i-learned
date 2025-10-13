@@ -1,29 +1,65 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useReducer } from 'react';
 import { addTodo as addTodoApi, deleteTodo as deleteTodoApi, getTodosByUserId, updateTodo as updateTodoApi } from '../api/todo-api';
 import { AuthContext } from './AuthContext';
 
-export const TodoContext = createContext();
+const TodoContext = createContext();
 
-export const TodoProvider = ({ children }) => {
+const todoReducer = (state, action) => {
+  switch (action.type) {
+    case 'FETCH_START':
+    case 'ADD_START':
+    case 'UPDATE_START':
+    case 'DELETE_START':
+      return { ...state, loading: true, error: null };
+    case 'FETCH_SUCCESS':
+      return { ...state, loading: false, todos: action.payload };
+    case 'ADD_SUCCESS':
+      return { ...state, loading: false, todos: [action.payload, ...state.todos] };
+    case 'UPDATE_SUCCESS':
+      return {
+        ...state,
+        loading: false,
+        todos: state.todos.map(todo =>
+          todo.id === action.payload.id ? { ...todo, completed: action.payload.completed } : todo
+        ),
+      };
+    case 'DELETE_SUCCESS':
+      return {
+        ...state,
+        loading: false,
+        todos: state.todos.filter(todo => todo.id !== action.payload.id),
+      };
+    case 'FETCH_ERROR':
+    case 'ADD_ERROR':
+    case 'UPDATE_ERROR':
+    case 'DELETE_ERROR':
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+const initialState = {
+  todos: [],
+  loading: false,
+  error: null,
+};
+
+const TodoProvider = ({ children }) => {
   const { user } = useContext(AuthContext);
-  const [todos, setTodos] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [state, dispatch] = useReducer(todoReducer, initialState);
 
   const fetchTodos = async () => {
     if (!user) return;
     console.log(`[TodoContext] Fetching todos for userId: ${user.id}`);
-    setLoading(true);
+    dispatch({ type: 'FETCH_START' });
     try {
       const response = await getTodosByUserId(user.id);
       console.log(`[TodoContext] Fetch todos response: ${response.status}`, response.data);
-      setTodos(response.data.todos);
-      setError(null);
+      dispatch({ type: 'FETCH_SUCCESS', payload: response.data.todos });
     } catch (e) {
       console.error('[TodoContext] Fetch todos error:', e);
-      setError(e.message);
-    } finally {
-      setLoading(false);
+      dispatch({ type: 'FETCH_ERROR', payload: e.message });
     }
   };
 
@@ -31,55 +67,48 @@ export const TodoProvider = ({ children }) => {
     if (!user) return;
     const newTodo = { ...todo, userId: user.id };
     console.log('[TodoContext] Adding todo:', newTodo);
-    setLoading(true);
+    dispatch({ type: 'ADD_START' });
     try {
       const response = await addTodoApi(newTodo);
       console.log(`[TodoContext] Add todo response: ${response.status}`, response.data);
-      setTodos([response.data, ...todos]);
-      setError(null);
+      dispatch({ type: 'ADD_SUCCESS', payload: response.data });
     } catch (e) {
       console.error('[TodoContext] Add todo error:', e);
-      setError(e.message);
-    } finally {
-      setLoading(false);
+      dispatch({ type: 'ADD_ERROR', payload: e.message });
     }
   };
 
   const updateTodo = async (id, completed) => {
     console.log(`[TodoContext] Updating todo id: ${id} to completed: ${completed}`);
-    setLoading(true);
+    dispatch({ type: 'UPDATE_START' });
     try {
       const response = await updateTodoApi(id, completed);
       console.log(`[TodoContext] Update todo response: ${response.status}`, response.data);
-      setTodos(todos.map(todo => todo.id === id ? { ...todo, completed } : todo));
-      setError(null);
+      dispatch({ type: 'UPDATE_SUCCESS', payload: { id, completed } });
     } catch (e) {
       console.error('[TodoContext] Update todo error:', e);
-      setError(e.message);
-    } finally {
-      setLoading(false);
+      dispatch({ type: 'UPDATE_ERROR', payload: e.message });
     }
   };
 
   const deleteTodo = async (id) => {
     console.log(`[TodoContext] Deleting todo id: ${id}`);
-    setLoading(true);
+    dispatch({ type: 'DELETE_START' });
     try {
       const response = await deleteTodoApi(id);
       console.log(`[TodoContext] Delete todo response: ${response.status}`, response.data);
-      setTodos(todos.filter(todo => todo.id !== id));
-      setError(null);
+      dispatch({ type: 'DELETE_SUCCESS', payload: { id } });
     } catch (e) {
       console.error('[TodoContext] Delete todo error:', e);
-      setError(e.message);
-    } finally {
-      setLoading(false);
+      dispatch({ type: 'DELETE_ERROR', payload: e.message });
     }
   };
 
   return (
-    <TodoContext.Provider value={{ todos, loading, error, fetchTodos, addTodo, updateTodo, deleteTodo }}>
+    <TodoContext.Provider value={{ ...state, fetchTodos, addTodo, updateTodo, deleteTodo }}>
       {children}
     </TodoContext.Provider>
   );
 };
+
+export { TodoContext, TodoProvider };

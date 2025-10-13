@@ -1,6 +1,6 @@
-import React, { useState, useContext } from 'react';
-import { View, Text, TextInput, Button, Alert } from 'react-native';
-import { AuthContext } from '../context/AuthContext';
+import React, { useState } from 'react';
+import { Alert, Button, Text, TextInput, View } from 'react-native';
+import { useAuth } from '../context/useAuth';
 import createStyles from '../themes/Styles';
 
 const styles = createStyles();
@@ -8,7 +8,7 @@ const styles = createStyles();
 const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { login, error } = useContext(AuthContext);
+  const { login, error } = useAuth();
 
   const handleLogin = () => {
     if (!username || !password) {

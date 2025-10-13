@@ -1,19 +1,19 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React, { useContext } from 'react';
+import React from 'react';
 import { Text, View } from 'react-native';
-import { AuthContext } from '../context/AuthContext';
+import { useAuth } from '../context/useAuth';
+import AllTodosScreen from '../screens/AllTodosScreen';
 import LoginScreen from '../screens/LoginScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import SignupScreen from '../screens/SignupScreen';
 import TodoScreen from '../screens/TodoScreen';
-import AllTodosScreen from '../screens/AllTodosScreen';
 import createStyles from '../themes/Styles';
 
 const Stack = createNativeStackNavigator();
 const styles = createStyles();
 
 const AppNavigator = () => {
-  const { token, isLoading } = useContext(AuthContext);
+  const { token, isLoading } = useAuth();
 
   if (isLoading) {
     return (

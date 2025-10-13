@@ -1,6 +1,6 @@
-import React, { createContext, useReducer, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { login as apiLogin, getUser, signup as apiSignup } from '../api/auth';
+import React, { createContext, useEffect, useReducer } from 'react';
+import { login as apiLogin, signup as apiSignup, getUser } from '../api/auth';
 
 const AuthContext = createContext();
 
@@ -23,35 +23,37 @@ const authReducer = (state, action) => {
   }
 };
 
+const initialState = {
+  isLoading: true,
+  user: null,
+  token: null,
+  error: null,
+};
+
 const AuthProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(authReducer, {
-    isLoading: true,
-    user: null,
-    token: null,
-    error: null,
-  });
+  const [state, dispatch] = useReducer(authReducer, initialState);
 
   useEffect(() => {
-    const loadToken = async () => {
-      const token = await AsyncStorage.getItem('token');
-      if (token) {
-        try {
-          console.log('Found token, attempting to log in...');
-          const response = await getUser(token);
-          dispatch({ type: 'LOGIN_SUCCESS', payload: { user: response.data, token } });
-          console.log('Auto-login successful for user:', response.data.username);
-        } catch (error) {
-          console.error('Failed to fetch user with stored token', error);
-          await AsyncStorage.removeItem('token');
-          dispatch({ type: 'SET_IS_LOADING', payload: false });
-        }
-      } else {
-        dispatch({ type: 'SET_IS_LOADING', payload: false });
-      }
-    };
-
     loadToken();
   }, []);
+
+  const loadToken = async () => {
+    const token = await AsyncStorage.getItem('token');
+    if (token) {
+      try {
+        console.log('Found token, attempting to log in...');
+        const response = await getUser();
+        dispatch({ type: 'LOGIN_SUCCESS', payload: { user: response.data, token } });
+        console.log('Auto-login successful for user:', response.data.username);
+      } catch (error) {
+        console.error('Failed to fetch user with stored token', error);
+        await AsyncStorage.removeItem('token');
+        dispatch({ type: 'SET_IS_LOADING', payload: false });
+      }
+    } else {
+      dispatch({ type: 'SET_IS_LOADING', payload: false });
+    }
+  };
 
   const login = async (username, password) => {
     dispatch({ type: 'LOGIN_START' });

@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useReducer } from 'react';
+import React, { createContext, useReducer } from 'react';
 import { addTodo as addTodoApi, deleteTodo as deleteTodoApi, getTodosByUserId, updateTodo as updateTodoApi } from '../api/todo-api';
-import { AuthContext } from './AuthContext';
+import { useAuth } from './useAuth';
 
 const TodoContext = createContext();
 
@@ -46,7 +46,7 @@ const initialState = {
 };
 
 const TodoProvider = ({ children }) => {
-  const { user } = useContext(AuthContext);
+  const { user } = useAuth();
   const [state, dispatch] = useReducer(todoReducer, initialState);
 
   const fetchTodos = async () => {

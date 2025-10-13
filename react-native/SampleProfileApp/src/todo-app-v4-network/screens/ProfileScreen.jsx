@@ -1,12 +1,12 @@
-import React, { useContext, useEffect } from 'react';
-import { View, Text, Button, Image } from 'react-native';
-import { AuthContext } from '../context/AuthContext';
+import React, { useEffect } from 'react';
+import { Button, Image, Text, View } from 'react-native';
+import { useAuth } from '../context/useAuth';
 import createStyles from '../themes/Styles';
 
 const styles = createStyles();
 
 const ProfileScreen = ({ navigation }) => {
-  const { user, logout } = useContext(AuthContext);
+  const { user, logout } = useAuth();
 
   useEffect(() => {
     if (user) {

@@ -8,11 +8,7 @@ export const login = (username, password) => {
 };
 
 export const getUser = (token) => {
-  return apiClient.get('/auth/me', {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  return apiClient.get('/auth/me');
 };
 
 export const signup = (userData) => {

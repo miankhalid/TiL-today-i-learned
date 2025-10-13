@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, FlatList, Text, TextInput, View } from 'react-native';
-import { TodoContext } from '../context/TodoContext';
+import { useTodos } from '../context/useTodos';
 import createStyles from '../themes/Styles';
 
 const TodoScreen = () => {
   const styles = createStyles();
-  const { todos, loading, error, fetchTodos, addTodo, updateTodo, deleteTodo } = useContext(TodoContext);
+  const { todos, loading, error, fetchTodos, addTodo, updateTodo, deleteTodo } = useTodos();
   const [newTodo, setNewTodo] = useState('');
   const [filter, setFilter] = useState('All'); // All, Active, Completed
 

@@ -79,6 +79,14 @@ const HomeScreen = ({ navigation }) => {
                 >
                     <Text style={styles.buttonText}>Todo app v4</Text>
                 </TouchableOpacity>
+
+                <TouchableOpacity
+                    style={styles.button}
+                    accessibilityRole="button"
+                    onPress={() => navigation.navigate('ReduxExample')}
+                >
+                    <Text style={styles.buttonText}>Redux Counter Example</Text>
+                </TouchableOpacity>
             </View>
         </SafeAreaView>
     );

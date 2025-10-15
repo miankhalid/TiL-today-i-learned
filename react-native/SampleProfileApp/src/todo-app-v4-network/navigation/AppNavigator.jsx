@@ -24,7 +24,7 @@ const AppNavigator = () => {
   }
 
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator>
       {token ? (
         <>
           <Stack.Screen name="Profile" component={ProfileScreen} />

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Alert, Button, Text, TextInput, View } from 'react-native';
-import { useAuth } from '../context/useAuth';
+import { useAuth } from '../context/auth/useAuth';
 import createStyles from '../themes/Styles';
 
 const styles = createStyles();

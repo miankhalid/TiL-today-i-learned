@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { Text, View } from 'react-native';
-import { useAuth } from '../context/useAuth';
+import { useAuth } from '../context/auth/useAuth';
 import AllTodosScreen from '../screens/AllTodosScreen';
 import LoginScreen from '../screens/LoginScreen';
 import ProfileScreen from '../screens/ProfileScreen';

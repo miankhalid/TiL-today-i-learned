@@ -1,12 +1,13 @@
 import React, { createContext, useReducer } from 'react';
+import { useAuth } from '../auth/useAuth';
 import {
-  addTodo as addTodoApi,
-  deleteTodo as deleteTodoApi,
-  getAllTodos,
-  getTodosByUserId,
-  updateTodo as updateTodoApi
-} from '../api/todo-api';
-import { useAuth } from './useAuth';
+  addTodo as addTodoAction,
+  deleteTodo as deleteTodoAction,
+  fetchAllTodos as fetchAllTodosAction,
+  fetchTodos as fetchTodosAction,
+  resetAllTodos as resetAllTodosAction,
+  updateTodo as updateTodoAction,
+} from './todoActions';
 
 const TodoContext = createContext();
 
@@ -36,12 +37,21 @@ const todoReducer = (state, action) => {
         allTodosHasMore: true,
       };
     case 'ADD_SUCCESS':
-      return { ...state, loading: false, todos: [action.payload, ...state.todos] };
+      // Add to both personal and "all" lists for UI consistency
+      return {
+        ...state,
+        loading: false,
+        todos: [action.payload, ...state.todos],
+        allTodos: [action.payload, ...state.allTodos],
+      };
     case 'UPDATE_SUCCESS':
       return {
         ...state,
         loading: false,
         todos: state.todos.map(todo =>
+          todo.id === action.payload.id ? { ...todo, completed: action.payload.completed } : todo
+        ),
+        allTodos: state.allTodos.map(todo =>
           todo.id === action.payload.id ? { ...todo, completed: action.payload.completed } : todo
         ),
       };
@@ -50,6 +60,7 @@ const todoReducer = (state, action) => {
         ...state,
         loading: false,
         todos: state.todos.filter(todo => todo.id !== action.payload.id),
+        allTodos: state.allTodos.filter(todo => todo.id !== action.payload.id),
       };
     case 'FETCH_ERROR':
     case 'ADD_ERROR':
@@ -76,63 +87,29 @@ const TodoProvider = ({ children }) => {
   const [state, dispatch] = useReducer(todoReducer, initialState);
   const allTodosLimit = 20;
 
-  const fetchTodos = async () => {
-    if (!user) return;
-    dispatch({ type: 'FETCH_START' });
-    try {
-      const response = await getTodosByUserId(user.id);
-      dispatch({ type: 'FETCH_SUCCESS', payload: response.data.todos });
-    } catch (e) {
-      dispatch({ type: 'FETCH_ERROR', payload: e.message });
-    }
+  const fetchTodos = () => {
+    fetchTodosAction(dispatch, user?.id);
   };
 
-  const fetchAllTodos = async () => {
+  const fetchAllTodos = () => {
     if (state.loading || !state.allTodosHasMore) return;
-    console.log(`[TodoContext] Fetching all todos with limit: ${allTodosLimit}, skip: ${state.allTodosSkip}`);
-    dispatch({ type: 'FETCH_ALL_START' });
-    try {
-      const response = await getAllTodos(allTodosLimit, state.allTodosSkip);
-      dispatch({ type: 'FETCH_ALL_SUCCESS', payload: { todos: response.data.todos, limit: allTodosLimit } });
-    } catch (e) {
-      dispatch({ type: 'FETCH_ALL_ERROR', payload: e.message });
-    }
+    fetchAllTodosAction(dispatch, allTodosLimit, state.allTodosSkip);
   };
 
   const resetAllTodos = () => {
-    dispatch({ type: 'RESET_ALL_TODOS' });
+    resetAllTodosAction(dispatch);
   };
 
-  const addTodo = async (todo) => {
-    if (!user) return;
-    const newTodo = { ...todo, userId: user.id };
-    dispatch({ type: 'ADD_START' });
-    try {
-      const response = await addTodoApi(newTodo);
-      dispatch({ type: 'ADD_SUCCESS', payload: response.data });
-    } catch (e) {
-      dispatch({ type: 'ADD_ERROR', payload: e.message });
-    }
+  const addTodo = (todo) => {
+    addTodoAction(dispatch, todo, user?.id);
   };
 
-  const updateTodo = async (id, completed) => {
-    dispatch({ type: 'UPDATE_START' });
-    try {
-      await updateTodoApi(id, completed);
-      dispatch({ type: 'UPDATE_SUCCESS', payload: { id, completed } });
-    } catch (e) {
-      dispatch({ type: 'UPDATE_ERROR', payload: e.message });
-    }
+  const updateTodo = (id, completed) => {
+    updateTodoAction(dispatch, id, completed);
   };
 
-  const deleteTodo = async (id) => {
-    dispatch({ type: 'DELETE_START' });
-    try {
-      await deleteTodoApi(id);
-      dispatch({ type: 'DELETE_SUCCESS', payload: { id } });
-    } catch (e) {
-      dispatch({ type: 'DELETE_ERROR', payload: e.message });
-    }
+  const deleteTodo = (id) => {
+    deleteTodoAction(dispatch, id);
   };
 
   return (

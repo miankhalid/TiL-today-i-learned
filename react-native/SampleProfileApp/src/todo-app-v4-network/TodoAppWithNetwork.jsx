@@ -1,6 +1,6 @@
 import React from 'react';
-import { AuthProvider } from './context/AuthContext';
-import { TodoProvider } from './context/TodoContext';
+import { AuthProvider } from './context/auth/AuthContext';
+import { TodoProvider } from './context/todos/TodoContext';
 import AppNavigator from './navigation/AppNavigator';
 
 const TodoAppWithNetwork = () => {

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { ActivityIndicator, FlatList, Text, View } from 'react-native';
-import { useTodos } from '../context/useTodos';
+import { useTodos } from '../context/todos/useTodos';
 import createStyles from '../themes/Styles';
 
 const AllTodosScreen = () => {
@@ -9,7 +9,6 @@ const AllTodosScreen = () => {
 
   useEffect(() => {
     console.log("[AllTodosScreen] Component mounted, fetching all todos");
-    resetAllTodos();
     fetchAllTodos();
 
     // When the component unmounts, reset the state for the next time it's opened

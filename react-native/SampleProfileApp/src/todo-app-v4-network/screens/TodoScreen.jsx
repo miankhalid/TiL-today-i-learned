@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, FlatList, Text, TextInput, View } from 'react-native';
-import { useTodos } from '../context/useTodos';
+import { useTodos } from '../context/todos/useTodos';
 import createStyles from '../themes/Styles';
 
 const TodoScreen = () => {

@@ -18,10 +18,12 @@ const todoReducer = (state, action) => {
     case 'UPDATE_START':
     case 'DELETE_START':
     case 'FETCH_ALL_START':
+      console.log("[TodoContext] FETCH_ALL_START:", state);
       return { ...state, loading: true, error: null };
     case 'FETCH_SUCCESS':
       return { ...state, loading: false, todos: action.payload };
     case 'FETCH_ALL_SUCCESS':
+      console.log("[TodoContext] FETCH_ALL_SUCCESS:", state);
       return {
         ...state,
         loading: false,
@@ -67,6 +69,7 @@ const todoReducer = (state, action) => {
     case 'UPDATE_ERROR':
     case 'DELETE_ERROR':
     case 'FETCH_ALL_ERROR':
+      console.log("[TodoContext] FETCH_ALL_ERROR:", state);
       return { ...state, loading: false, error: action.payload };
     default:
       return state;
@@ -92,6 +95,7 @@ const TodoProvider = ({ children }) => {
   };
 
   const fetchAllTodos = () => {
+    console.log("[TodoContext] fetchAllTodos -- loading & hasMore:", state.loading, state.allTodosHasMore);
     if (state.loading || !state.allTodosHasMore) return;
     fetchAllTodosAction(dispatch, allTodosLimit, state.allTodosSkip);
   };

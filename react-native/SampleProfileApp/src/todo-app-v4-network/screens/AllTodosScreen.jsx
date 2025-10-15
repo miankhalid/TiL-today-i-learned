@@ -39,7 +39,12 @@ const AllTodosScreen = () => {
         data={allTodos}
         renderItem={renderItem}
         keyExtractor={item => item.id.toString()}
-        onEndReached={fetchAllTodos}
+        onEndReached={() => {
+          console.log("[AllTodosScreen] onEndReached, loading:", loading)
+          if (!loading) {
+            fetchAllTodos();
+          }
+        }}
         onEndReachedThreshold={0.5}
         ListFooterComponent={renderFooter}
       />

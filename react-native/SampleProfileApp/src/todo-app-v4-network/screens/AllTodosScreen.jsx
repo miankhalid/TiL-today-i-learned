@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ActivityIndicator, FlatList, Text, View } from 'react-native';
 import { useTodos } from '../context/todos/useTodos';
 import createStyles from '../themes/Styles';
@@ -6,6 +6,9 @@ import createStyles from '../themes/Styles';
 const AllTodosScreen = () => {
   const styles = createStyles();
   const { allTodos, loading, error, fetchAllTodos, resetAllTodos } = useTodos();
+
+  // Ref to track if a request is currently in progress
+  const requestInProgress = useRef(false);
 
   useEffect(() => {
     console.log("[AllTodosScreen] Component mounted, fetching all todos");
@@ -17,6 +20,14 @@ const AllTodosScreen = () => {
       resetAllTodos();
     };
   }, []);
+
+  // Update the requestInProgress ref when loading state changes
+  useEffect(() => {
+    if (!loading) {
+      // Reset the requestInProgress when loading is complete
+      requestInProgress.current = false;
+    }
+  }, [loading]);
 
   const renderFooter = () => {
     if (!loading) return null;
@@ -41,7 +52,9 @@ const AllTodosScreen = () => {
         keyExtractor={item => item.id.toString()}
         onEndReached={() => {
           console.log("[AllTodosScreen] onEndReached, loading:", loading)
-          if (!loading) {
+          // Check both the context loading state and our local ref to prevent multiple simultaneous requests
+          if (!loading && !requestInProgress.current) {
+            requestInProgress.current = true;
             fetchAllTodos();
           }
         }}

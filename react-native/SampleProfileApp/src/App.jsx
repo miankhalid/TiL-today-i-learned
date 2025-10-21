@@ -12,6 +12,7 @@ import ThemeDemoScreen from './screens/ThemeDemoScreen';
 import TodoTabs from './todo-app/TodoTabs';
 import TodoTabsUseContext from './todo-app-use-context/TodoTabsUseContext';
 import TodoTabsV3 from './todo-app-v3/TodoTabsV3';
+import TodoAppWithNetwork from './todo-app-v4-network/TodoAppWithNetwork';
 
 
 const Stack = createNativeStackNavigator();
@@ -70,6 +71,11 @@ export default function App() {
                 <Stack.Screen
                     name="TodoAppV3"
                     component={TodoTabsV3}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                    name="TodoAppV4"
+                    component={TodoAppWithNetwork}
                     options={{ headerShown: false }}
                 />
             </Stack.Navigator>

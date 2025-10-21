@@ -1,25 +1,28 @@
 import React, { useEffect, useRef } from 'react';
 import { ActivityIndicator, FlatList, Text, View } from 'react-native';
-import { useTodos } from '../context/todos/useTodos';
+import { useDispatch, useSelector } from 'react-redux';
+import { resetAllTodos } from '../store/todosSlice';
+import { fetchAllTodos as fetchAllTodosThunk } from '../store/todosThunks';
 import createStyles from '../themes/Styles';
 
 const AllTodosScreen = () => {
   const styles = createStyles();
-  const { allTodos, loading, error, fetchAllTodos, resetAllTodos } = useTodos();
+  const dispatch = useDispatch();
+  const { allTodos, loading, error, allTodosSkip, allTodosHasMore } = useSelector(state => state.todos);
 
   // Ref to track if a request is currently in progress
   const requestInProgress = useRef(false);
 
   useEffect(() => {
     console.log("[AllTodosScreen] Component mounted, fetching all todos");
-    fetchAllTodos();
+    dispatch(fetchAllTodosThunk({ limit: 20, skip: 0 }));
 
     // When the component unmounts, reset the state for the next time it's opened
     return () => {
       console.log("[AllTodosScreen] Component umounted, resetting all todos");
-      resetAllTodos();
+      dispatch(resetAllTodos());
     };
-  }, []);
+  }, []); // Empty dependency array - only run on mount
 
   // Update the requestInProgress ref when loading state changes
   useEffect(() => {
@@ -52,10 +55,10 @@ const AllTodosScreen = () => {
         keyExtractor={item => item.id.toString()}
         onEndReached={() => {
           console.log("[AllTodosScreen] onEndReached, loading:", loading)
-          // Check both the context loading state and our local ref to prevent multiple simultaneous requests
-          if (!loading && !requestInProgress.current) {
+          // Check both the Redux loading state and our local ref to prevent multiple simultaneous requests
+          if (!loading && !requestInProgress.current && allTodosHasMore) {
             requestInProgress.current = true;
-            fetchAllTodos();
+            dispatch(fetchAllTodosThunk({ limit: 20, skip: allTodosSkip }));
           }
         }}
         onEndReachedThreshold={0.5}

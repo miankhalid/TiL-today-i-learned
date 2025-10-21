@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Alert, Button, Text, TextInput, View } from 'react-native';
-import { useAuth } from '../context/auth/useAuth';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../store/authThunks';
 import createStyles from '../themes/Styles';
 
 const styles = createStyles();
@@ -8,16 +9,16 @@ const styles = createStyles();
 const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { login, error } = useAuth();
+  const dispatch = useDispatch();
+  const { error } = useSelector(state => state.auth);
 
   const handleLogin = () => {
     if (!username || !password) {
       Alert.alert('Error', 'Username and password cannot be empty.');
       return;
     }
-    login(username, password);
+    dispatch(login({ username, password }));
   };
-
 
   return (
     <View style={styles.container}>

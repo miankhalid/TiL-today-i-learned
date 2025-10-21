@@ -1,16 +1,14 @@
 import React from 'react';
-import { AuthProvider } from './context/auth/AuthContext';
-import { TodoProvider } from './context/todos/TodoContext';
+import { Provider } from 'react-redux';
+import { store } from './store/store';
 import AppNavigator from './navigation/AppNavigator';
 
 const TodoAppWithNetwork = () => {
   console.log('Rendering TodoAppWithNetwork');
   return (
-    <AuthProvider>
-      <TodoProvider>
-        <AppNavigator />
-      </TodoProvider>
-    </AuthProvider>
+    <Provider store={store}>
+      <AppNavigator />
+    </Provider>
   );
 };
 

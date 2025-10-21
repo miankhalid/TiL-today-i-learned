@@ -1,7 +1,8 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Text, View } from 'react-native';
-import { useAuth } from '../context/auth/useAuth';
+import { useDispatch, useSelector } from 'react-redux';
+import { loadTokenAndGetUser } from '../store/authThunks';
 import AllTodosScreen from '../screens/AllTodosScreen';
 import LoginScreen from '../screens/LoginScreen';
 import ProfileScreen from '../screens/ProfileScreen';
@@ -13,7 +14,13 @@ const Stack = createNativeStackNavigator();
 const styles = createStyles();
 
 const AppNavigator = () => {
-  const { token, isLoading } = useAuth();
+  const dispatch = useDispatch();
+  const { token, isLoading } = useSelector(state => state.auth);
+
+  useEffect(() => {
+    // Load token and user info when the app starts
+    dispatch(loadTokenAndGetUser());
+  }, []); // Empty dependency array - only run on mount
 
   if (isLoading) {
     return (

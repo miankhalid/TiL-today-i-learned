@@ -1,21 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { Button, FlatList, Text, TextInput, View } from 'react-native';
-import { useTodos } from '../context/todos/useTodos';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUserTodos, addTodo, updateTodo, deleteTodo } from '../store/todosThunks';
 import createStyles from '../themes/Styles';
 
 const TodoScreen = () => {
   const styles = createStyles();
-  const { todos, loading, error, fetchTodos, addTodo, updateTodo, deleteTodo } = useTodos();
+  const dispatch = useDispatch();
+  const { todos, loading, error } = useSelector(state => state.todos);
+  const { user } = useSelector(state => state.auth);
   const [newTodo, setNewTodo] = useState('');
   const [filter, setFilter] = useState('All'); // All, Active, Completed
 
   useEffect(() => {
-    fetchTodos();
-  }, []);
+    if (user) {
+      dispatch(fetchUserTodos(user.id));
+    }
+  }, [dispatch, user]);
 
   const handleAddTodo = () => {
-    if (newTodo.trim()) {
-      addTodo({ todo: newTodo, completed: false });
+    if (newTodo.trim() && user) {
+      dispatch(addTodo({ todo: { todo: newTodo, completed: false }, userId: user.id }));
       setNewTodo('');
     }
   };
@@ -30,11 +35,11 @@ const TodoScreen = () => {
     <View style={styles.todoItem}>
       <Text
         style={item.completed ? styles.todoTextCompleted : styles.todoText}
-        onPress={() => updateTodo(item.id, !item.completed)}
+        onPress={() => dispatch(updateTodo({ id: item.id, completed: !item.completed }))}
       >
         {`#${item.id}: ${item.todo}`}
       </Text>
-      <Button style={styles.button} title="Delete" onPress={() => deleteTodo(item.id)} />
+      <Button style={styles.button} title="Delete" onPress={() => dispatch(deleteTodo(item.id))} />
 
     </View>
   );

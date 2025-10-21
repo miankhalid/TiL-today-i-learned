@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
 import { Button, Image, Text, View } from 'react-native';
-import { useAuth } from '../context/auth/useAuth';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../store/authThunks';
 import createStyles from '../themes/Styles';
 
 const styles = createStyles();
 
 const ProfileScreen = ({ navigation }) => {
-  const { user, logout } = useAuth();
+  const dispatch = useDispatch();
+  const { user } = useSelector(state => state.auth);
 
   useEffect(() => {
     if (user) {
@@ -23,6 +25,10 @@ const ProfileScreen = ({ navigation }) => {
     );
   }
 
+  const handleLogout = () => {
+    dispatch(logout());
+  };
+
   return (
     <View style={styles.container}>
       <Image source={{ uri: user.image }} style={styles.profileImage} />
@@ -35,7 +41,7 @@ const ProfileScreen = ({ navigation }) => {
       <View style={styles.spacer} />
       <Button title="View all todos" onPress={() => navigation.navigate('AllTodos')} />
       <View style={styles.spacer} />
-      <Button title="Logout" onPress={logout} />
+      <Button title="Logout" onPress={handleLogout} />
     </View>
   );
 };

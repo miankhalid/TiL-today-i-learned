@@ -55,7 +55,7 @@ export const signup = createAsyncThunk(
       console.log('Attempting signup for user:', userData.firstName);
       const response = await apiSignup(userData);
       console.log('CODE: ', response.status, ' - Signup successful. New user added:', response.data);
-      return response;
+      return response.data;
     } catch (error) {
       console.error('Signup failed:', error.response ? error.response.data : error.message);
       return rejectWithValue('Signup failed');

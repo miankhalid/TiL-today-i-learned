@@ -1,17 +1,17 @@
 // App.jsx
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React from 'react';
 import { useColorScheme } from 'react-native';
 
+import MediaTest from './media/App';
 import HomeScreen from './screens/HomeScreen';
 import LifecycleDemo from './screens/LifecycleDemo';
 import ProfileScreen from './screens/ProfileScreen';
 import Tabs from './screens/TabsScreen';
 import ThemeDemoScreen from './screens/ThemeDemoScreen';
-import TodoTabs from './todo-app/TodoTabs';
 import TodoTabsUseContext from './todo-app-use-context/TodoTabsUseContext';
 import TodoTabsV3 from './todo-app-v3/TodoTabsV3';
+import TodoTabs from './todo-app/TodoTabs';
 
 
 const Stack = createNativeStackNavigator();
@@ -70,6 +70,11 @@ export default function App() {
                 <Stack.Screen
                     name="TodoAppV3"
                     component={TodoTabsV3}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                    name="MediaTest"
+                    component={MediaTest}
                     options={{ headerShown: false }}
                 />
             </Stack.Navigator>

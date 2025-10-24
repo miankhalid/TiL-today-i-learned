@@ -11,15 +11,9 @@ export default function Tabs() {
     return (
         <TodoProvider>
             <Tab.Navigator>
-                <Tab.Screen name="Home">
-                    {() => <HomeTab />}
-                </Tab.Screen>
-                <Tab.Screen name="Add Todo">
-                    {() => <AddTab />}
-                </Tab.Screen>
-                <Tab.Screen name="Completed">
-                    {() => <CompletedTab />}
-                </Tab.Screen>
+                <Tab.Screen name="Home" component={HomeTab} />
+                <Tab.Screen name="Add Todo" component={AddTab} />
+                <Tab.Screen name="Completed" component={CompletedTab} />
             </Tab.Navigator>
         </TodoProvider>
     );

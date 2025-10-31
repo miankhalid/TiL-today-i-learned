@@ -1,11 +1,10 @@
+import { SUPABASE_ANON_KEY, SUPABASE_URL } from '@env';
 import axios from 'axios';
 
-// TODO: Replace with your API base URL from environment variables
-const API_URL = 'http://localhost:3000/api';
-
 const instance = axios.create({
-  baseURL: API_URL,
+  baseURL: `${SUPABASE_URL}/rest/v1`,
   headers: {
+    apiKey: SUPABASE_ANON_KEY,
     'Content-Type': 'application/json',
   },
 });

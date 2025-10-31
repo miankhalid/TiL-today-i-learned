@@ -1,146 +1,79 @@
-import type {
-  FulfilledThemeConfiguration,
-  Variant,
-} from '@/theme/types/config';
-import type { ComponentTheme, Theme } from '@/theme/types/theme';
 import type { PropsWithChildren } from 'react';
 import type { MMKV } from 'react-native-mmkv';
 
-import { DarkTheme, DefaultTheme } from '@react-navigation/native';
 import {
-  createContext,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+  DarkTheme,
+  DefaultTheme,
+  type Theme as NavigationTheme,
+} from '@react-navigation/native';
+import { ThemeProvider as RestyleThemeProvider } from '@shopify/restyle';
+import { createContext, useCallback, useEffect, useMemo, useState } from 'react';
 
-import {
-  generateBackgrounds,
-  staticBackgroundStyles,
-} from '@/theme/backgrounds';
-import {
-  generateBorderColors,
-  generateBorderRadius,
-  generateBorderWidths,
-  staticBorderStyles,
-} from '@/theme/borders';
-import componentsGenerator from '@/theme/components';
-import {
-  generateFontColors,
-  generateFontSizes,
-  staticFontStyles,
-} from '@/theme/fonts';
-import { generateGutters, staticGutterStyles } from '@/theme/gutters';
-import layout from '@/theme/layout';
-import generateConfig from '@/theme/ThemeProvider/generateConfig';
+import { darkTheme, theme as lightTheme } from '@/theme/restyleTheme';
 
-type Context = {
-  changeTheme: (variant: Variant) => void;
-} & Theme;
+type ThemeVariant = 'light' | 'dark';
 
-export const ThemeContext = createContext<Context | undefined>(undefined);
+type ThemeContextType = {
+  variant: ThemeVariant;
+  changeTheme: (variant: ThemeVariant) => void;
+  navigationTheme: NavigationTheme;
+};
+
+export const ThemeContext = createContext<ThemeContextType | undefined>(
+  undefined,
+);
 
 type Properties = PropsWithChildren<{
   readonly storage: MMKV;
 }>;
 
-function ThemeProvider({ children = false, storage }: Properties) {
-  // Current theme variant
-  const [variant, setVariant] = useState(
-    (storage.getString('theme') ?? 'default') as Variant,
+function ThemeProvider({ children, storage }: Properties) {
+  const [variant, setVariant] = useState<ThemeVariant>(
+    (storage.getString('theme') as ThemeVariant) || 'light',
   );
 
-  // Initialize theme at default if not defined
   useEffect(() => {
-    const appHasThemeDefined = storage.contains('theme');
-    if (!appHasThemeDefined) {
-      storage.set('theme', 'default');
-      setVariant('default');
+    const storedTheme = storage.getString('theme') as ThemeVariant | undefined;
+    if (storedTheme) {
+      setVariant(storedTheme);
+    } else {
+      storage.set('theme', 'light');
     }
   }, [storage]);
 
   const changeTheme = useCallback(
-    (nextVariant: Variant) => {
+    (nextVariant: ThemeVariant) => {
       setVariant(nextVariant);
       storage.set('theme', nextVariant);
     },
     [storage],
   );
 
-  // Flatten config with current variant
-  const fullConfig = useMemo(() => {
-    return generateConfig(variant) satisfies FulfilledThemeConfiguration;
-  }, [variant]);
-
-  const fonts = useMemo(() => {
-    return {
-      ...generateFontSizes(),
-      ...generateFontColors(fullConfig),
-      ...staticFontStyles,
-    };
-  }, [fullConfig]);
-
-  const backgrounds = useMemo(() => {
-    return {
-      ...generateBackgrounds(fullConfig),
-      ...staticBackgroundStyles,
-    };
-  }, [fullConfig]);
-
-  const gutters = useMemo(() => {
-    return {
-      ...generateGutters(fullConfig),
-      ...staticGutterStyles,
-    };
-  }, [fullConfig]);
-
-  const borders = useMemo(() => {
-    return {
-      ...generateBorderColors(fullConfig),
-      ...generateBorderRadius(),
-      ...generateBorderWidths(),
-      ...staticBorderStyles,
-    };
-  }, [fullConfig]);
+  const currentTheme = variant === 'dark' ? darkTheme : lightTheme;
 
   const navigationTheme = useMemo(() => {
-    if (variant === 'dark') {
-      return {
-        ...DarkTheme,
-        colors: fullConfig.navigationColors,
-        dark: true,
-      };
-    }
+    const navTheme = variant === 'dark' ? DarkTheme : DefaultTheme;
     return {
-      ...DefaultTheme,
-      colors: fullConfig.navigationColors,
-      dark: false,
+      ...navTheme,
+      colors: {
+        ...navTheme.colors,
+        background: currentTheme.colors.mainBackground,
+        card: currentTheme.colors.cardBackground,
+        text: currentTheme.colors.mainForeground,
+        primary: currentTheme.colors.primary,
+      },
     };
-  }, [variant, fullConfig.navigationColors]);
+  }, [variant, currentTheme]);
 
-  const theme = useMemo(() => {
-    return {
-      backgrounds,
-      borders,
-      colors: fullConfig.colors,
-      fonts,
-      gutters,
-      layout,
-      variant,
-    } satisfies ComponentTheme;
-  }, [variant, fonts, backgrounds, borders, fullConfig.colors, gutters]);
-
-  const components = useMemo(() => {
-    return componentsGenerator(theme);
-  }, [theme]);
-
-  const value = useMemo(() => {
-    return { ...theme, changeTheme, components, navigationTheme };
-  }, [theme, components, navigationTheme, changeTheme]);
+  const value = useMemo(
+    () => ({ variant, changeTheme, navigationTheme }),
+    [variant, changeTheme, navigationTheme],
+  );
 
   return (
-    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+    <ThemeContext.Provider value={value}>
+      <RestyleThemeProvider theme={currentTheme}>{children}</RestyleThemeProvider>
+    </ThemeContext.Provider>
   );
 }
 

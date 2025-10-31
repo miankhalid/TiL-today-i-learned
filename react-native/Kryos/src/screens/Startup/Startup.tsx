@@ -3,16 +3,16 @@ import type { RootScreenProps } from '@/navigation/types';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, Text, View } from 'react-native';
+import { ActivityIndicator, Text } from 'react-native';
 
 import { Paths } from '@/navigation/paths';
-import { useTheme } from '@/theme';
+import { useAppTheme } from '@/theme/hooks/useTheme';
 
-import { AssetByVariant } from '@/components/atoms';
+import Box from '@/components/atoms/Box';
 import { SafeScreen } from '@/components/templates';
 
 function Startup({ navigation }: RootScreenProps<Paths.Startup>) {
-  const { fonts, gutters, layout } = useTheme();
+  const { colors } = useAppTheme();
   const { t } = useTranslation();
 
   const { isError, isFetching, isSuccess } = useQuery({
@@ -33,26 +33,19 @@ function Startup({ navigation }: RootScreenProps<Paths.Startup>) {
 
   return (
     <SafeScreen>
-      <View
-        style={[
-          layout.flex_1,
-          layout.col,
-          layout.itemsCenter,
-          layout.justifyCenter,
-        ]}
+      <Box
+        alignItems="center"
+        flex={1}
+        flexDirection="column"
+        justifyContent="center"
       >
-        <AssetByVariant
-          path="tom"
-          resizeMode="contain"
-          style={{ height: 300, width: 300 }}
-        />
         {isFetching ? (
-          <ActivityIndicator size="large" style={[gutters.marginVertical_24]} />
+          <ActivityIndicator size="large" style={{ marginVertical: 24 }} />
         ) : undefined}
         {isError ? (
-          <Text style={[fonts.size_16, fonts.red500]}>{t('common_error')}</Text>
+          <Text style={{ color: colors.red }} variant="body">{t('common_error')}</Text>
         ) : undefined}
-      </View>
+      </Box>
     </SafeScreen>
   );
 }

@@ -1,19 +1,26 @@
 import type { AuthScreenProps } from '@/navigation/types';
 
 import { useState } from 'react';
+import { Alert } from 'react-native';
+
+import { login } from '@/hooks/auth/useAuth';
 
 import Box from '@/components/atoms/Box';
 import Button from '@/components/atoms/Button/Button';
 import Input from '@/components/atoms/Input/Input';
+import PasswordInput from '@/components/atoms/Input/PasswordInput';
 import Text from '@/components/atoms/Text';
 
 function LoginScreen({ navigation }: AuthScreenProps<'Login'>) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  // eslint-disable-next-line unicorn/consistent-function-scoping
   const handleLogin = () => {
-    // Login logic will be added in the next step
+    login({ email, password }).catch((error: unknown) => {
+      if (error instanceof Error) {
+        Alert.alert('Login Error', error.message);
+      }
+    });
   };
 
   return (
@@ -21,33 +28,28 @@ function LoginScreen({ navigation }: AuthScreenProps<'Login'>) {
       <Text marginBottom="xl" textAlign="center" variant="header">
         Welcome Back
       </Text>
+
       <Input
-        autoCapitalize="none"
-        borderColor="mainForeground"
-        borderRadius="s"
-        borderWidth={1}
-        marginBottom="m"
+        autoCapitalize='none'
+        containerProps={{ marginBottom: 'm' }}
         onChangeText={setEmail}
-        padding="m"
         placeholder="Email"
-        value={email}
-      />
-      <Input
-        borderColor="mainForeground"
-        borderRadius="s"
-        borderWidth={1}
-        marginBottom="m"
+        value={email} />
+
+      <PasswordInput
+        containerProps={{ marginBottom: 'm' }}
         onChangeText={setPassword}
-        padding="m"
-        placeholder="Password"
-        secureTextEntry
-        value={password}
-      />
-      <Button label="Login" marginBottom="m" onPress={handleLogin} />
+        placeholder="Password" />
+
       <Button
-        label="Don't have an account? Sign Up"
+        containerProps={{ marginBottom: 's' }}
+        onPress={handleLogin}
+        title="Login" />
+
+      <Button
         onPress={() => { navigation.navigate('Signup'); }}
-        variant="secondary"
+        title="Don't have an account? Sign Up"
+        variant="text"
       />
     </Box>
   );

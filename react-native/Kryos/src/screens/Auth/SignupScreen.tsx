@@ -1,9 +1,13 @@
 import type { AuthScreenProps } from '@/navigation/types';
 
 import { useState } from 'react';
+import { Alert } from 'react-native';
+
+import { signup } from '@/hooks/auth/useAuth';
 
 import Box from '@/components/atoms/Box';
 import Button from '@/components/atoms/Button/Button';
+import { PasswordInput } from '@/components/atoms/Input';
 import Input from '@/components/atoms/Input/Input';
 import Text from '@/components/atoms/Text';
 
@@ -12,9 +16,21 @@ function SignupScreen({ navigation }: AuthScreenProps<'Signup'>) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  // eslint-disable-next-line unicorn/consistent-function-scoping
   const handleSignup = () => {
-    // Signup logic will be added in the next step
+    if (password !== confirmPassword) {
+      Alert.alert('Signup Error', 'Passwords do not match');
+      return;
+    }
+
+    signup({ email, password })
+      .then(() => {
+        Alert.alert('Signup Success', 'Please check your email to confirm your account.');
+      })
+      .catch((error: unknown) => {
+        if (error instanceof Error) {
+          Alert.alert('Signup Error', error.message);
+        }
+      });
   };
 
   return (
@@ -22,44 +38,35 @@ function SignupScreen({ navigation }: AuthScreenProps<'Signup'>) {
       <Text marginBottom="xl" textAlign="center" variant="header">
         Create Account
       </Text>
+
       <Input
-        autoCapitalize="none"
-        borderColor="mainForeground"
-        borderRadius="s"
-        borderWidth={1}
-        marginBottom="m"
+        autoCapitalize='none'
+        containerProps={{ marginBottom: 'm' }}
         onChangeText={setEmail}
-        padding="m"
         placeholder="Email"
-        value={email}
-      />
-      <Input
-        borderColor="mainForeground"
-        borderRadius="s"
-        borderWidth={1}
-        marginBottom="m"
+        value={email} />
+
+      <PasswordInput
+        containerProps={{ marginBottom: 'm' }}
         onChangeText={setPassword}
-        padding="m"
         placeholder="Password"
-        secureTextEntry
-        value={password}
-      />
-      <Input
-        borderColor="mainForeground"
-        borderRadius="s"
-        borderWidth={1}
-        marginBottom="m"
+        value={password} />
+
+      <PasswordInput
+        containerProps={{ marginBottom: 'm' }}
         onChangeText={setConfirmPassword}
-        padding="m"
         placeholder="Confirm Password"
-        secureTextEntry
-        value={confirmPassword}
+        value={confirmPassword} />
+
+      <Button containerProps={{ marginBottom: 's' }}
+        onPress={handleSignup}
+        title="Sign Up"
       />
-      <Button label="Sign Up" marginBottom="m" onPress={handleSignup} />
+
       <Button
-        label="Already have an account? Login"
         onPress={() => { navigation.navigate('Login'); }}
-        variant="secondary"
+        title="Already have an account? Login"
+        variant="text"
       />
     </Box>
   );

@@ -1,15 +1,15 @@
+import type { Theme } from '../restyleTheme';
+import type { ThemeContextType } from '../ThemeProvider/ThemeProvider';
+
 import { useTheme as useRestyleTheme } from '@shopify/restyle';
 import { useContext } from 'react';
 
 import { ThemeContext } from '../ThemeProvider/ThemeProvider';
-import type { Theme } from '../restyleTheme';
 
 /**
  * Hook for accessing the Restyle theme object for styling.
  */
 export const useAppTheme = () => useRestyleTheme<Theme>();
-
-import type { ThemeContextType } from '../ThemeProvider/ThemeProvider';
 
 /**
  * Hook for managing the theme (switching between light/dark).

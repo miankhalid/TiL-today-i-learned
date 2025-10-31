@@ -1,6 +1,8 @@
-import HomeScreen from '@/screens/Home/HomeScreen';
-import { createStackNavigator } from '@react-navigation/stack';
 import type { MainStackParamList } from './types';
+
+import { createStackNavigator } from '@react-navigation/stack';
+
+import HomeScreen from '@/screens/Home/HomeScreen';
 
 const Stack = createStackNavigator<MainStackParamList>();
 

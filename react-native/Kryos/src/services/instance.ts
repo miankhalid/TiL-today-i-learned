@@ -1,7 +1,7 @@
 import { SUPABASE_ANON_KEY, SUPABASE_URL } from '@env';
-import axios from 'axios';
+import axios, { type AxiosInstance } from 'axios';
 
-const instance = axios.create({
+const instance: AxiosInstance = axios.create({
   baseURL: `${SUPABASE_URL}/rest/v1`,
   headers: {
     apiKey: SUPABASE_ANON_KEY,

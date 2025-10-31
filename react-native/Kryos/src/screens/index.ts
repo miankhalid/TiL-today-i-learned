@@ -1,2 +1,2 @@
-export { default as Example } from './Example/Example';
+export { default as LoadingScreen } from './Loading/LoadingScreen';
 export { default as Startup } from './Startup/Startup';

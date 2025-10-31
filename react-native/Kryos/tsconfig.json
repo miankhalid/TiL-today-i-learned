@@ -1,9 +1,16 @@
 {
   "extends": "@react-native/typescript-config",
   "compilerOptions": {
-    "types": ["react-native", "jest", "node"],
+    "jsx": "react-jsx",
+    "types": [
+      "react-native",
+      "jest",
+      "node"
+    ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     },
     "noUnusedLocals": true
   },
@@ -18,5 +25,10 @@
     "*.ts",
     ".prettierrc.mjs"
   ],
-  "exclude": ["node_modules", "_", "android", "ios"]
+  "exclude": [
+    "node_modules",
+    "_",
+    "android",
+    "ios"
+  ]
 }

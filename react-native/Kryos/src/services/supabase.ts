@@ -11,4 +11,10 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
     persistSession: true,
     storage: supabaseStorageAdapter,
   },
+  global: {
+    fetch: fetch,
+    headers: {
+      'X-Client-Info': 'SUPABASE_JS',
+    },
+  },
 });

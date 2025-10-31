@@ -1,4 +1,3 @@
-import type { PropsWithChildren } from 'react';
 import type { MMKV } from 'react-native-mmkv';
 
 import {
@@ -7,39 +6,33 @@ import {
   type Theme as NavigationTheme,
 } from '@react-navigation/native';
 import { ThemeProvider as RestyleThemeProvider } from '@shopify/restyle';
-import { createContext, useCallback, useEffect, useMemo, useState } from 'react';
+import { createContext, useCallback, useMemo, useState } from 'react';
 
 import { darkTheme, theme as lightTheme } from '@/theme/restyleTheme';
 
-type ThemeVariant = 'light' | 'dark';
-
-type ThemeContextType = {
-  variant: ThemeVariant;
+export type ThemeContextType = {
   changeTheme: (variant: ThemeVariant) => void;
   navigationTheme: NavigationTheme;
+  variant: ThemeVariant;
 };
+
+type ThemeVariant = 'dark' | 'light';
 
 export const ThemeContext = createContext<ThemeContextType | undefined>(
   undefined,
 );
 
-type Properties = PropsWithChildren<{
+type Properties = {
+  readonly children: React.ReactNode;
   readonly storage: MMKV;
-}>;
+};
 
 function ThemeProvider({ children, storage }: Properties) {
   const [variant, setVariant] = useState<ThemeVariant>(
     (storage.getString('theme') as ThemeVariant) || 'light',
   );
 
-  useEffect(() => {
-    const storedTheme = storage.getString('theme') as ThemeVariant | undefined;
-    if (storedTheme) {
-      setVariant(storedTheme);
-    } else {
-      storage.set('theme', 'light');
-    }
-  }, [storage]);
+
 
   const changeTheme = useCallback(
     (nextVariant: ThemeVariant) => {
@@ -57,16 +50,16 @@ function ThemeProvider({ children, storage }: Properties) {
       ...navTheme,
       colors: {
         ...navTheme.colors,
-        background: currentTheme.colors.mainBackground,
-        card: currentTheme.colors.cardBackground,
-        text: currentTheme.colors.mainForeground,
-        primary: currentTheme.colors.primary,
+        background: currentTheme.colors.bgBackground,
+        card: currentTheme.colors.bgSurface,
+        primary: currentTheme.colors.bgPrimary,
+        text: currentTheme.colors.textPrimary,
       },
     };
   }, [variant, currentTheme]);
 
   const value = useMemo(
-    () => ({ variant, changeTheme, navigationTheme }),
+    () => ({ changeTheme, navigationTheme, variant }),
     [variant, changeTheme, navigationTheme],
   );
 

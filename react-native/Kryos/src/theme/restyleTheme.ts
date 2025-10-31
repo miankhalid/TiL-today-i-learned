@@ -7,77 +7,71 @@ const palette = {
 
   // Blacks & Grays
   black: '#000000',
-  white: '#FFFFFF',
   gray1: '#F7F9F9',
   gray2: '#EFF3F4',
   gray3: '#B3B3B3',
   gray4: '#536471',
   gray5: '#2F3336',
+  white: '#FFFFFF',
 
   // Supporting colors
-  red: '#F91880',
   green: '#00BA7C',
+  red: '#F91880',
 };
 
 const theme = createTheme({
-  colors: {
-    mainBackground: palette.white,
-    mainForeground: palette.black,
-    cardBackground: palette.white,
-    cardBorder: palette.gray2,
-    primary: palette.primary,
-    secondary: palette.gray4,
-    danger: palette.red,
-    success: palette.green,
-    ...palette,
-  },
-  spacing: {
-    s: 8,
-    m: 16,
-    l: 24,
-    xl: 40,
-  },
   breakpoints: {
     phone: 0,
     tablet: 768,
   },
-  textVariants: {
-    header: {
-      fontFamily: 'System',
-      fontSize: 34,
+  buttonVariants: {
+    primary: {
+      alignItems: 'center',
+      backgroundColor: 'primary',
+      borderRadius: 's',
+      color: 'white', // Text color
+      fontSize: 16,
       fontWeight: 'bold',
-      color: 'mainForeground',
+      padding: 'm',
     },
-    subheader: {
-      fontFamily: 'System',
-      fontSize: 20,
-      fontWeight: '600',
-      color: 'mainForeground',
-    },
-    body: {
-      fontFamily: 'System',
+    secondary: {
+      alignItems: 'center',
+      backgroundColor: 'secondary',
+      borderRadius: 's',
+      color: 'white', // Text color
       fontSize: 16,
-      color: 'mainForeground',
-    },
-    caption: {
-      fontFamily: 'System',
-      fontSize: 14,
-      color: 'secondary',
-    },
-    defaults: {
-      fontFamily: 'System',
-      fontSize: 16,
-      color: 'mainForeground',
+      fontWeight: 'bold',
+      padding: 'm',
     },
   },
-  cardVariants: {
-    defaults: {
-      backgroundColor: 'cardBackground',
-      borderRadius: 'm',
+  colors: {
+    cardBackground: palette.white,
+    cardBorder: palette.gray2,
+    danger: palette.red,
+    mainBackground: palette.white,
+    mainForeground: palette.black,
+    primary: palette.primary,
+    secondary: palette.gray4,
+    success: palette.green,
+    ...palette,
+  },
+  spacing: {
+    l: 24,
+    m: 16,
+    s: 8,
+    xl: 40,
+  },
+  textVariants: {
+    body: {
+      fontSize: 16,
     },
-    bordered: {
-      borderWidth: 1,
-      borderColor: 'cardBorder',
+    defaults: {
+      color: 'mainForeground',
+      fontSize: 16,
+    },
+    header: {
+      fontSize: 24,
+      fontWeight: 'bold',
     },
   },
 });
@@ -88,10 +82,10 @@ const darkTheme: Theme = {
   ...theme,
   colors: {
     ...theme.colors,
-    mainBackground: palette.black,
-    mainForeground: palette.white,
     cardBackground: palette.gray5,
     cardBorder: palette.gray5,
+    mainBackground: palette.black,
+    mainForeground: palette.white,
     secondary: palette.gray3,
   },
 };

@@ -1,11 +1,35 @@
-import type { Paths } from '@/navigation/paths';
+import type { NavigatorScreenParams } from '@react-navigation/native';
 import type { StackScreenProps } from '@react-navigation/stack';
 
-export type RootScreenProps<
-  S extends keyof RootStackParamList = keyof RootStackParamList,
-> = StackScreenProps<RootStackParamList, S>;
+// Root Navigator
+export type RootScreenProps<T extends keyof RootStackParamList> = StackScreenProps<
+  RootStackParamList,
+  T
+>;
 
 export type RootStackParamList = {
-  [Paths.Example]: undefined;
-  [Paths.Startup]: undefined;
+  Auth: NavigatorScreenParams<AuthStackParamList>;
+  Main: NavigatorScreenParams<MainStackParamList>;
+  Startup: undefined;
+};
+
+// Auth Navigator
+export type AuthScreenProps<T extends keyof AuthStackParamList> = StackScreenProps<
+  AuthStackParamList,
+  T
+>;
+
+export type AuthStackParamList = {
+  Login: undefined;
+  Signup: undefined;
+};
+
+// Main (App) Navigator
+export type MainScreenProps<T extends keyof MainStackParamList> = StackScreenProps<
+  MainStackParamList,
+  T
+>;
+
+export type MainStackParamList = {
+  Home: undefined;
 };

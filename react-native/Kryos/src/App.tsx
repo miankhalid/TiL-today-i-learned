@@ -1,17 +1,19 @@
 import 'react-native-gesture-handler';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Button } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { MMKV } from 'react-native-mmkv';
-import { Button, View } from 'react-native';
+import { Provider } from 'react-redux';
 
-import ApplicationNavigator from '@/navigation/Application';
 import { ThemeProvider } from '@/theme';
 import { useThemeManager } from '@/theme/hooks/useTheme';
+import '@/translations';
+
 import Box from '@/components/atoms/Box';
 import Text from '@/components/atoms/Text';
 
-import '@/translations';
+import { store } from '@/store';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,38 +26,46 @@ export const queryClient = new QueryClient({
   },
 });
 
-export const storage = new MMKV();
+export const storage: MMKV = new MMKV();
 
-// Example component to test theme
-const Main = () => {
-  const { variant, changeTheme } = useThemeManager();
+// Example component to test theme and redux
+function App() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Provider store={store}>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider storage={storage}>
+            <Main />
+          </ThemeProvider>
+        </QueryClientProvider>
+      </Provider>
+    </GestureHandlerRootView>
+  );
+}
+
+function Main() {
+  const { changeTheme, variant } = useThemeManager();
 
   return (
-    <Box flex={1} backgroundColor="mainBackground" justifyContent="center" alignItems="center">
+    <Box
+      alignItems="center"
+      backgroundColor="mainBackground"
+      flex={1}
+      justifyContent="center"
+    >
       <Text variant="header">Theme Demo</Text>
-      <Text variant="body" marginVertical="m">
+      <Text marginVertical="m" variant="body">
         Current Theme: {variant}
       </Text>
       <Button
+        onPress={() => { changeTheme(variant === 'light' ? 'dark' : 'light'); }}
         title="Toggle Theme"
-        onPress={() => changeTheme(variant === 'light' ? 'dark' : 'light')}
       />
       {/* We will render the actual navigator here later */}
       {/* <ApplicationNavigator /> */}
     </Box>
   );
-};
-
-function App() {
-  return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider storage={storage}>
-          <Main />
-        </ThemeProvider>
-      </QueryClientProvider>
-    </GestureHandlerRootView>
-  );
 }
 
 export default App;
+

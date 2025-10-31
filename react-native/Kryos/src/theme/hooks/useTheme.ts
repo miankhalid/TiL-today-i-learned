@@ -9,10 +9,12 @@ import type { Theme } from '../restyleTheme';
  */
 export const useAppTheme = () => useRestyleTheme<Theme>();
 
+import type { ThemeContextType } from '../ThemeProvider/ThemeProvider';
+
 /**
  * Hook for managing the theme (switching between light/dark).
  */
-export const useThemeManager = () => {
+export const useThemeManager = (): ThemeContextType => {
   const context = useContext(ThemeContext);
 
   if (context === undefined) {

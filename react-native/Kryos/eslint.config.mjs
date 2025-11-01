@@ -1,3 +1,6 @@
+// @ts-check
+
+import eslint from '@eslint/js';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import importPlugin from 'eslint-plugin-import';
 import jest from 'eslint-plugin-jest';
@@ -7,36 +10,44 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import testingLibrary from 'eslint-plugin-testing-library';
 import unicorn from 'eslint-plugin-unicorn';
+import tseslint from 'typescript-eslint';
 
 const ERROR = 2;
 const OFF = 0;
 
-import eslint from '@eslint/js';
-import tseslint from 'typescript-eslint';
-
-export default tseslint.config(
+// We no longer use tseslint.config()
+export default [
+  // 1. Base configs (Recommended, not 'all')
   eslint.configs.recommended,
-  tseslint.configs.strictTypeChecked,
-  tseslint.configs.stylisticTypeChecked,
-  unicorn.configs.all,
-  perfectionist.configs['recommended-alphabetical'],
+  ...tseslint.configs.recommendedTypeChecked, // Unpack the array
+  ...tseslint.configs.stylisticTypeChecked, // Unpack the array
+  react.configs.flat.recommended,
+  react.configs.flat['jsx-runtime'],
   importPlugin.flatConfigs.react,
   importPlugin.flatConfigs['react-native'],
   importPlugin.flatConfigs.typescript,
-  react.configs.flat.all,
-  react.configs.flat['jsx-runtime'],
   reactRefresh.configs.recommended,
   testingLibrary.configs['flat/react'],
-  eslintConfigPrettier, // last
+  perfectionist.configs['recommended-alphabetical'],
+
+  // 2. Prettier (MUST be last to override styling)
+  eslintConfigPrettier,
+
+  // 3. Main Configuration Object
   {
     languageOptions: {
       globals: {
-        __DEV__: 'readonly', // define it as a global variable
+        __DEV__: 'readonly',
       },
       parserOptions: {
         projectService: true,
         tsconfigRootDir: import.meta.dirname,
       },
+    },
+    plugins: {
+      // Define ONLY plugins NOT provided by a spread config above.
+      'react-hooks': reactHooks,
+      'unicorn': unicorn,
     },
     settings: {
       'import/resolver': {
@@ -52,23 +63,37 @@ export default tseslint.config(
       },
     },
   },
+
+  // 4. Custom Rule Overrides
   {
-    ...reactHooks.configs.recommended,
-    plugins: {
-      'react-hooks': reactHooks,
-    },
     rules: {
-      ...reactHooks.configs.recommended.rules,
+      // --- React & React Hooks ---
+      ...reactHooks.configs.recommended.rules, // Add react-hooks rules
+      'react-refresh/only-export-components': OFF,
+      'react/jsx-filename-extension': [ERROR, { extensions: ['.tsx', '.jsx'] }],
+      'react/jsx-sort-props': OFF, // Handled by perfectionist
+      'react/require-default-props': [
+        ERROR,
+        { forbidDefaultForRequired: true, functions: 'defaultArguments' },
+      ],
+
+      // --- TypeScript ---
       '@typescript-eslint/consistent-type-definitions': [ERROR, 'type'],
-      '@typescript-eslint/dot-notation': [ERROR, { allowKeywords: true }],
-      '@typescript-eslint/no-empty-function': OFF,
-      '@typescript-eslint/restrict-template-expressions': OFF,
-      'import/no-unresolved': OFF, // handled by TypeScript
+      '@typescript-eslint/no-floating-promises': ERROR,
+      '@typescript-eslint/no-unused-vars': [
+        ERROR,
+        { argsIgnorePattern: '^_', ignoreRestSiblings: true },
+      ],
+
+      // --- General Code Quality ---
       'no-console': [ERROR, { allow: ['warn', 'error'] }],
       'no-magic-numbers': [
         ERROR,
         { ignore: [-1, 0, 1, 2, 3, 4, 5, 6], ignoreArrayIndexes: true },
       ],
+
+      // --- Import & Sorting (Your perfectionist config) ---
+      'import/no-unresolved': OFF,
       'perfectionist/sort-imports': [
         'error',
         {
@@ -78,16 +103,18 @@ export default tseslint.config(
               hooks: '@/hooks(/.+)?',
               navigation: '@/navigation(/.+)?',
               screens: '@/screens(/.+)?',
+              services: '@/services(/.+)?',
               test: '@/test(/.+)?',
               theme: '@/theme(/.+)?',
               translations: '@/translations(/.+)?',
+              utils: '@/utils(/.+)?',
             },
           },
           groups: [
             'side-effect',
             ['type', 'internal-type'],
             ['builtin', 'external'],
-            ['theme', 'hooks', 'navigation', 'translations'],
+            ['theme', 'hooks', 'navigation', 'translations', 'services', 'utils'],
             ['components', 'screens'],
             ['test'],
             'internal',
@@ -98,27 +125,11 @@ export default tseslint.config(
         },
       ],
 
-      'react-refresh/only-export-components': OFF,
-      'react/forbid-component-props': OFF,
-      'react/jsx-filename-extension': [ERROR, { extensions: ['.tsx', '.jsx'] }],
-      'react/jsx-max-depth': [ERROR, { max: 10 }],
-      'react/jsx-no-bind': OFF,
-      'react/jsx-no-literals': OFF,
-      'react/jsx-props-no-spreading': OFF,
-      'react/jsx-sort-props': OFF, // Handled by perfectionist
-      'react/no-multi-comp': OFF,
-      'react/no-unescaped-entities': OFF,
-      'react/require-default-props': [
-        ERROR,
-        {
-          forbidDefaultForRequired: true,
-          functions: 'defaultArguments',
-        },
-      ],
+      // --- Unicorn ---
       'unicorn/filename-case': OFF,
       'unicorn/no-keyword-prefix': OFF,
       'unicorn/no-useless-undefined': OFF,
-      'unicorn/prefer-top-level-await': 0, // not valid on RN for the moment
+      'unicorn/prefer-top-level-await': OFF, // Not valid in RN
       'unicorn/prevent-abbreviations': [
         ERROR,
         {
@@ -132,6 +143,8 @@ export default tseslint.config(
       ],
     },
   },
+
+  // 5. File-Specific Overrides (Globs)
   {
     files: ['**/theme/*.ts'],
     rules: {
@@ -149,6 +162,16 @@ export default tseslint.config(
     },
   },
   {
+    files: ['eslint.config.mjs'],
+    rules: {
+      '@typescript-eslint/no-unsafe-argument': OFF,
+      '@typescript-eslint/no-unsafe-assignment': OFF,
+      '@typescript-eslint/no-unsafe-call': OFF,
+      '@typescript-eslint/no-unsafe-member-access': OFF,
+    },
+  },
+  {
+    // Apply Jest rules ONLY to test files
     files: ['**/*.spec.{js,ts,jsx,tsx}', '**/*.test.{js,ts,jsx,tsx}'],
     ...jest.configs['flat/recommended'],
     rules: {
@@ -156,6 +179,6 @@ export default tseslint.config(
     },
   },
   {
-    ignores: ['plugins/**'],
+    ignores: ['plugins/**', 'sample/**'],
   },
-);
+];

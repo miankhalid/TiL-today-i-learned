@@ -1,25 +1,38 @@
-import type { RootStackParamList } from '@/navigation/types';
+import type { RootStackParamList } from './types';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { Paths } from '@/navigation/paths';
-import { useTheme } from '@/theme';
+import { useAuth } from '@/hooks/auth/useAuth';
+import { useThemeManager } from '@/theme/hooks/useTheme';
 
-import { Example, Startup } from '@/screens';
+import { LoadingScreen } from '@/screens';
+
+import AuthNavigator from './AuthNavigator';
+import MainNavigator from './MainNavigator';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
+// @refresh reset
 function ApplicationNavigator() {
-  const { navigationTheme, variant } = useTheme();
+
+  const { navigationTheme } = useThemeManager();
+  const { loading, session } = useAuth();
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <SafeAreaProvider>
       <NavigationContainer theme={navigationTheme}>
-        <Stack.Navigator key={variant} screenOptions={{ headerShown: false }}>
-          <Stack.Screen component={Startup} name={Paths.Startup} />
-          <Stack.Screen component={Example} name={Paths.Example} />
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          {session ? (
+            <Stack.Screen component={MainNavigator} name="Main" />
+          ) : (
+            <Stack.Screen component={AuthNavigator} name="Auth" />
+          )}
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
@@ -27,3 +40,5 @@ function ApplicationNavigator() {
 }
 
 export default ApplicationNavigator;
+
+

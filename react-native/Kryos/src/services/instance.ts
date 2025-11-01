@@ -1,10 +1,30 @@
-import ky from 'ky';
+import { SUPABASE_ANON_KEY, SUPABASE_URL } from '@env';
+import axios, { type AxiosInstance } from 'axios';
 
-const prefixUrl = `${process.env.API_URL ?? ''}/`;
-
-export const instance = ky.extend({
+const instance: AxiosInstance = axios.create({
+  baseURL: `${SUPABASE_URL}/rest/v1`,
   headers: {
-    Accept: 'application/json',
+    apiKey: SUPABASE_ANON_KEY,
+    'Content-Type': 'application/json',
   },
-  prefixUrl,
 });
+
+// Here you can add interceptors for requests and responses
+// For example, to add an auth token to every request:
+
+/*
+instance.interceptors.request.use(
+  async config => {
+    // const token = await someAsyncTokenStorage.get();
+    // if (token) {
+    //   config.headers.Authorization = `Bearer ${token}`;
+    // }
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
+  },
+);
+*/
+
+export default instance;

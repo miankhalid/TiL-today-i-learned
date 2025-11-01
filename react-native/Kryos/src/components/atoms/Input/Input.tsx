@@ -6,9 +6,10 @@ import {
     TouchableOpacity,
 } from 'react-native';
 
+import { Theme } from '@/theme/restyleTheme';
+
 import Box from '@/components/atoms/Box';
 import Text from '@/components/atoms/Text';
-import { Theme } from '@/theme/restyleTheme';
 
 // Constants
 const DISABLED_OPACITY = 0.6;
@@ -16,7 +17,7 @@ const INPUT_FONT_SIZE = 16;
 const INPUT_PADDING_VERTICAL = 8;
 
 // Base Input Props
-export type InputProps = Omit<RNTextInputProps, 'placeholderTextColor'> & {
+export type InputProps = {
     characterLimit?: number;
     clearable?: boolean;
     containerProps?: React.ComponentProps<typeof Box>;
@@ -26,7 +27,7 @@ export type InputProps = Omit<RNTextInputProps, 'placeholderTextColor'> & {
     leftIcon?: React.ReactNode;
     rightIcon?: React.ReactNode;
     variant?: 'default' | 'filled' | 'outlined';
-};
+} & Omit<RNTextInputProps, 'placeholderTextColor'>;
 
 // Base TextInput Component
 export const Input = forwardRef<RNTextInput, InputProps>(
@@ -103,7 +104,6 @@ export const Input = forwardRef<RNTextInput, InputProps>(
 
                     {/* Text Input */}
                     <RNTextInput
-                        ref={reference}
                         editable={editable}
                         onBlur={(event) => {
                             setIsFocused(false);
@@ -115,6 +115,7 @@ export const Input = forwardRef<RNTextInput, InputProps>(
                             props.onFocus?.(event);
                         }}
                         placeholderTextColor={theme.colors.gray5}
+                        ref={reference}
                         style={{
                             color: hasError ? theme.colors.error : theme.colors.text,
                             flex: 1,

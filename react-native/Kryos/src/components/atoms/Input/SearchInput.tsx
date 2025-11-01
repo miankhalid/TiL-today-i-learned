@@ -6,16 +6,15 @@ import Text from '@/components/atoms/Text';
 import Input, { InputProps } from './Input';
 
 // Search Input Props
-export type SearchInputProps = Omit<InputProps, 'clearable' | 'leftIcon'> & {
+export type SearchInputProps = {
     onSearch?: (query: string) => void;
-};
+} & Omit<InputProps, 'clearable' | 'leftIcon'>;
 
 // Search Input Component
 export const SearchInput = forwardRef<RNTextInput, SearchInputProps>(
     ({ onSearch, ...props }, reference) => {
         return (
             <Input
-                ref={reference}
                 clearable
                 leftIcon={
                     <Text color="textSecondary" fontSize={18}>
@@ -27,6 +26,7 @@ export const SearchInput = forwardRef<RNTextInput, SearchInputProps>(
                     props.onSubmitEditing?.(event);
                 }}
                 placeholder="Search..."
+                ref={reference}
                 returnKeyType="search"
                 {...props}
             />

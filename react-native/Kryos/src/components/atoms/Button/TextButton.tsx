@@ -8,12 +8,12 @@ import Text from '@/components/atoms/Text';
 const ACTIVE_OPACITY = 0.7;
 
 // TextButton Props
-export type TextButtonProps = TouchableOpacityProps & {
+export type TextButtonProps = {
     actionText: string;
     containerProps?: React.ComponentProps<typeof Box>;
     disabled?: boolean;
     prefixText?: string;
-};
+} & TouchableOpacityProps;
 
 // TextButton Component - For "Already have an account? Login" style buttons
 export const TextButton = ({

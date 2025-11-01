@@ -8,10 +8,10 @@ const DEFAULT_MIN_HEIGHT = 80;
 const DEFAULT_MAX_HEIGHT = 200;
 
 // Multiline Input Props
-export type MultilineInputProps = Omit<InputProps, 'multiline'> & {
+export type MultilineInputProps = {
     maxHeight?: number;
     minHeight?: number;
-};
+} & Omit<InputProps, 'multiline'>;
 
 // Multiline Input Component (for tweets, replies, etc.)
 export const MultilineInput = forwardRef<RNTextInput, MultilineInputProps>(
@@ -21,8 +21,8 @@ export const MultilineInput = forwardRef<RNTextInput, MultilineInputProps>(
     ) => {
         return (
             <Input
-                ref={reference}
                 multiline
+                ref={reference}
                 style={[
                     style,
                     {

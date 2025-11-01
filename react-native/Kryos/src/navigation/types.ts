@@ -10,7 +10,6 @@ export type RootScreenProps<T extends keyof RootStackParamList> = StackScreenPro
 export type RootStackParamList = {
   Auth: NavigatorScreenParams<AuthStackParamList>;
   Main: NavigatorScreenParams<MainStackParamList>;
-  Startup: undefined;
 };
 
 // Auth Navigator

@@ -15,6 +15,7 @@ module.exports = {
     [
       'module:react-native-dotenv',
       {
+        allowUndefined: true,
         env: [
           'SUPABASE_URL',
           'SUPABASE_ANON_KEY',
@@ -22,7 +23,6 @@ module.exports = {
         moduleName: '@env',
         path: '.env',
         safe: false,
-        allowUndefined: true,
       },
     ],
     '@babel/plugin-transform-export-namespace-from',

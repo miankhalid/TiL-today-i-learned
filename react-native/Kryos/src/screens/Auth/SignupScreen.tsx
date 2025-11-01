@@ -1,8 +1,10 @@
 import type { AuthScreenProps } from '@/navigation/types';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Alert } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { signup } from '@/hooks/auth/useAuth';
 
@@ -13,39 +15,50 @@ import Input from '@/components/atoms/Input/Input';
 import Text from '@/components/atoms/Text';
 
 import { authErrorKeys } from '@/constants/authErrorMessages';
-import { signupSchema, type SignupFormData } from '@/schemas/authSchema';
+import { type SignupFormData, signupSchema } from '@/schemas/authSchema';
+import { clearError, setLoading } from '@/store/slices/authSlice';
+import { RootState } from '@/store/store';
 
 function SignupScreen({ navigation }: AuthScreenProps<'Signup'>) {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const isLoading = useSelector<RootState, boolean>(s => s.auth.isLoading);
+
   const {
     control,
     formState: { errors },
     handleSubmit,
   } = useForm<SignupFormData>({
     defaultValues: {
+      confirmPassword: '',
       email: '',
       password: '',
-      confirmPassword: '',
     },
     resolver: zodResolver(signupSchema),
   });
 
-  const handleSignup = (data: SignupFormData) => {
-    signup(data)
-      .then(() => {
-        Alert.alert(
-          'Signup Success',
-          'Please check your email to confirm your account.',
-        );
-      })
-      .catch((error: unknown) => {
-        if (error instanceof Error) {
+  const handleSignup = async (data: SignupFormData) => {
+    dispatch(setLoading(true));
+    dispatch(clearError());
+    try {
+      await signup(data)
+        .then(() => {
           Alert.alert(
-            'Signup Error',
-            error.message || t(authErrorKeys.SIGNUP_ERROR),
+            'Signup Success',
+            'Please check your email to confirm your account.',
           );
-        }
-      });
+        });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        Alert.alert(
+          'Signup Error',
+          error.message || t(authErrorKeys.SIGNUP_ERROR),
+        );
+        dispatch(setError(error.message || t(authErrorKeys.SIGNUP_ERROR)));
+      }
+    } finally {
+      dispatch(setLoading(false));
+    }
   };
 
   return (
@@ -57,7 +70,7 @@ function SignupScreen({ navigation }: AuthScreenProps<'Signup'>) {
       <Controller
         control={control}
         name="email"
-        render={({ field: { onChange, onBlur, value } }) => (
+        render={({ field: { onBlur, onChange, value } }) => (
           <Input
             autoCapitalize="none"
             containerProps={{ marginBottom: 'm' }}
@@ -73,7 +86,7 @@ function SignupScreen({ navigation }: AuthScreenProps<'Signup'>) {
       <Controller
         control={control}
         name="password"
-        render={({ field: { onChange, onBlur, value } }) => (
+        render={({ field: { onBlur, onChange, value } }) => (
           <PasswordInput
             containerProps={{ marginBottom: 'm' }}
             error={
@@ -90,7 +103,7 @@ function SignupScreen({ navigation }: AuthScreenProps<'Signup'>) {
       <Controller
         control={control}
         name="confirmPassword"
-        render={({ field: { onChange, onBlur, value } }) => (
+        render={({ field: { onBlur, onChange, value } }) => (
           <PasswordInput
             containerProps={{ marginBottom: 'm' }}
             error={
@@ -108,6 +121,7 @@ function SignupScreen({ navigation }: AuthScreenProps<'Signup'>) {
 
       <Button
         containerProps={{ marginBottom: 's' }}
+        loading={isLoading}
         onPress={() => {
           void handleSubmit(handleSignup)();
         }}

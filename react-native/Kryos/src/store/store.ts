@@ -1,6 +1,7 @@
 
 import { configureStore } from '@reduxjs/toolkit';
 
+import { authSlice } from './slices/authSlice';
 import { uiSlice } from './slices/uiSlice';
 
 export const store = configureStore({
@@ -10,6 +11,7 @@ export const store = configureStore({
     }),
   reducer: {
     [uiSlice.name]: uiSlice.reducer,
+    [authSlice.name]: authSlice.reducer,
   },
 });
 

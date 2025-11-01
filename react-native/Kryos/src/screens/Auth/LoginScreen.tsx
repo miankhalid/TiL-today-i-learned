@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Alert } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { login } from '@/hooks/auth/useAuth';
 import i18n from '@/translations';
@@ -16,9 +17,15 @@ import Text from '@/components/atoms/Text';
 
 import { authErrorKeys } from '@/constants/authErrorMessages';
 import { type LoginFormData, loginSchema } from '@/schemas/authSchema';
+import { clearError, setLoading } from '@/store/slices/authSlice';
+import { RootState } from '@/store/store';
 
 function LoginScreen({ navigation }: AuthScreenProps<'Login'>) {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const isLoading = useSelector<RootState, boolean>(s => s.auth.isLoading);
+
+
   const {
     control,
     formState: { errors },
@@ -31,12 +38,19 @@ function LoginScreen({ navigation }: AuthScreenProps<'Login'>) {
     resolver: zodResolver(loginSchema),
   });
 
-  const handleLogin = (data: LoginFormData) => {
-    login(data).catch((error: unknown) => {
+  const handleLogin = async (data: LoginFormData) => {
+    dispatch(setLoading(true));
+    dispatch(clearError());
+    try {
+      await login(data);
+    } catch (error: unknown) {
       if (error instanceof Error) {
         Alert.alert('Login Error', error.message || t(authErrorKeys.LOGIN_ERROR));
+        dispatch(setError(error.message || t(authErrorKeys.LOGIN_ERROR)));
       }
-    });
+    } finally {
+      dispatch(setLoading(false));
+    }
   };
 
   // keeping these logs for debugging translations
@@ -86,6 +100,7 @@ function LoginScreen({ navigation }: AuthScreenProps<'Login'>) {
 
       <Button
         containerProps={{ marginBottom: 's' }}
+        loading={isLoading}
         onPress={() => {
           void handleSubmit(handleLogin)();
         }}

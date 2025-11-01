@@ -19,6 +19,7 @@ export type AuthScreenProps<T extends keyof AuthStackParamList> = StackScreenPro
 >;
 
 export type AuthStackParamList = {
+  Feed: undefined;
   Login: undefined;
   Signup: undefined;
 };
@@ -30,5 +31,6 @@ export type MainScreenProps<T extends keyof MainStackParamList> = StackScreenPro
 >;
 
 export type MainStackParamList = {
+  Feed: undefined;
   Home: undefined;
 };

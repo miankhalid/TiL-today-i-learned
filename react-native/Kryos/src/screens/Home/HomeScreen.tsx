@@ -5,7 +5,6 @@ import Button from '@/components/atoms/Button/Button';
 import Text from '@/components/atoms/Text';
 
 function HomeScreen() {
-
   const handleLogout = () => {
     logout().catch(console.error);
   };

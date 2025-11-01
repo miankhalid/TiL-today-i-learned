@@ -16,7 +16,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 // @refresh reset
 function ApplicationNavigator() {
-   
+
   const { navigationTheme } = useThemeManager();
   const { loading, session } = useAuth();
 

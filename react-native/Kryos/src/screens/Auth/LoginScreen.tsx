@@ -1,4 +1,5 @@
-import type { AuthScreenProps } from '@/navigation/types';
+import type { RootStackParamList } from '@/navigation/types';
+import type { StackNavigationProp } from '@react-navigation/stack';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
@@ -20,7 +21,9 @@ import { type LoginFormData, loginSchema } from '@/schemas/authSchema';
 import { clearError, setLoading } from '@/store/slices/authSlice';
 import { RootState } from '@/store/store';
 
-function LoginScreen({ navigation }: AuthScreenProps<'Login'>) {
+type LoginScreenNavigationProperty = StackNavigationProp<RootStackParamList, 'Login'>;
+
+function LoginScreen({ navigation }: { navigation: LoginScreenNavigationProperty }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const isLoading = useSelector<RootState, boolean>(s => s.auth.isLoading);
@@ -43,6 +46,7 @@ function LoginScreen({ navigation }: AuthScreenProps<'Login'>) {
     dispatch(clearError());
     try {
       await login(data);
+      // After successful login, navigation will automatically happen to #HomeScreen
     } catch (error: unknown) {
       if (error instanceof Error) {
         Alert.alert('Login Error', error.message || t(authErrorKeys.LOGIN_ERROR));
@@ -108,10 +112,19 @@ function LoginScreen({ navigation }: AuthScreenProps<'Login'>) {
       />
 
       <Button
+        containerProps={{ marginBottom: 's' }}
         onPress={() => {
           navigation.navigate('Signup');
         }}
         title="Don't have an account? Sign Up"
+        variant="text"
+      />
+
+      <Button
+        onPress={() => {
+          navigation.navigate('Feed');
+        }}
+        title="Back to Feed"
         variant="text"
       />
     </Box>

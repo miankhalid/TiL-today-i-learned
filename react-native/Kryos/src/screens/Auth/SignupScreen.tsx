@@ -1,4 +1,5 @@
-import type { AuthScreenProps } from '@/navigation/types';
+import type { RootStackParamList } from '@/navigation/types';
+import type { StackNavigationProp } from '@react-navigation/stack';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
@@ -19,7 +20,9 @@ import { type SignupFormData, signupSchema } from '@/schemas/authSchema';
 import { clearError, setLoading } from '@/store/slices/authSlice';
 import { RootState } from '@/store/store';
 
-function SignupScreen({ navigation }: AuthScreenProps<'Signup'>) {
+type SignupScreenNavigationProperty = StackNavigationProp<RootStackParamList, 'Signup'>;
+
+function SignupScreen({ navigation }: { navigation: SignupScreenNavigationProperty }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const isLoading = useSelector<RootState, boolean>(s => s.auth.isLoading);
@@ -47,6 +50,7 @@ function SignupScreen({ navigation }: AuthScreenProps<'Signup'>) {
             'Signup Success',
             'Please check your email to confirm your account.',
           );
+          // After successful login, navigation will automatically happen to #HomeScreen
         });
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -129,10 +133,19 @@ function SignupScreen({ navigation }: AuthScreenProps<'Signup'>) {
       />
 
       <Button
+        containerProps={{ marginBottom: 's' }}
         onPress={() => {
           navigation.navigate('Login');
         }}
         title="Already have an account? Login"
+        variant="text"
+      />
+
+      <Button
+        onPress={() => {
+          navigation.navigate('Feed');
+        }}
+        title="Back to Feed"
         variant="text"
       />
     </Box>

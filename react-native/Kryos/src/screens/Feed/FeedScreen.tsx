@@ -5,17 +5,33 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import Box from '@/components/atoms/Box';
 import Button from '@/components/atoms/Button/Button';
+import Image from '@/components/atoms/Image';
 import Text from '@/components/atoms/Text';
 
 import { dummyPosts } from '@/dummy/dummyData';
 
+import avatarPlaceholder from '../../theme/assets/images/default_avatar.png';
+
 function FeedScreen({ navigation }: AuthScreenProps<'Feed'>) {
   const renderPost = ({ item }: { item: any }) => (
     <Box borderBottomColor="borderDefault" borderBottomWidth={1} key={item.id} padding="m">
-      <Text marginBottom="s" variant="header">{item.user?.name || item.user_id}</Text>
-      <Text marginBottom="s" variant="body">@{item.user?.username}</Text>
-      <Text variant="body">{item.content}</Text>
-      <Text color="textSecondary" marginTop="s" variant="caption">{item.created_at}</Text>
+      <Box alignItems="flex-start" flexDirection="row" marginBottom="m">
+        <Image
+          borderRadius="round"
+          height={40}
+          marginRight="s"
+          source={{ uri: item.user?.image || avatarPlaceholder }}
+          width={40}
+        />
+        <Box flex={1}>
+          <Text variant="header">{item.user?.name || item.user_id}</Text>
+          <Text color="textSecondary" variant="caption">@{item.user?.username}</Text>
+        </Box>
+      </Box>
+      <Text marginBottom="s" variant="body">
+        {item.content}
+      </Text>
+      <Text color="textSecondary" variant="caption">{item.created_at}</Text>
     </Box>
   );
 

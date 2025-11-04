@@ -1,3 +1,10 @@
 export const enum Paths {
-  Example = 'example',
+  // Auth Stack
+  Login = 'Login',
+  Signup = 'Signup',
+
+  // Main Stack
+  Feed = 'Feed',
+  Home = 'Home',
+  NewPost = 'NewPost',
 }

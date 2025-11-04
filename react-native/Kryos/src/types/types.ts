@@ -1,5 +1,11 @@
 import type { User as SupabaseUser } from '@supabase/supabase-js';
 
+export type CreatePostData = {
+  content: string;
+  parentId?: null | string;
+  userId: string;
+}
+
 // User type based on dummy data and potential Supabase user structure
 export type User = {
   bio?: null | string;

@@ -33,4 +33,5 @@ export type MainScreenProps<T extends keyof MainStackParamList> = StackScreenPro
 export type MainStackParamList = {
   Feed: undefined;
   Home: undefined;
+  NewPost: undefined;
 };

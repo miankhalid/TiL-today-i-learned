@@ -1,4 +1,4 @@
-import { Post, User } from '../types';
+import { Post, User } from '../types/types';
 
 export const dummyUsers: User[] = [
   {

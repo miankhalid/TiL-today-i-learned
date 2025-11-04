@@ -1,6 +1,10 @@
 import { useTheme } from '@shopify/restyle';
 import React from 'react';
-import { ActivityIndicator, TouchableOpacity, TouchableOpacityProps } from 'react-native';
+import {
+  ActivityIndicator,
+  TouchableOpacity,
+  TouchableOpacityProps,
+} from 'react-native';
 
 import { Theme } from '@/theme/restyleTheme';
 
@@ -24,7 +28,7 @@ export type ButtonProps = {
 
 // Button Component
 export const Button = ({
-  containerProps, 
+  containerProps,
   disabled = false,
   loading = false,
   rightIcon,
@@ -86,7 +90,11 @@ export const Button = ({
           {loading ? (
             <Box marginLeft="s" position="absolute" right={16}>
               <ActivityIndicator
-                color={variant === 'primary' ? theme.colors.white : theme.colors.primary}
+                color={
+                  variant === 'primary'
+                    ? theme.colors.white
+                    : theme.colors.primary
+                }
                 size={SPINNER_SIZE}
               />
             </Box>

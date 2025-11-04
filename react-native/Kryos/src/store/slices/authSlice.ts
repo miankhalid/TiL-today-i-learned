@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 type AuthState = {
   error: null | string;
   isLoading: boolean;
-}
+};
 
 const initialState: AuthState = {
   error: null,

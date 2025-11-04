@@ -10,15 +10,15 @@ function SettingsScreen() {
   };
 
   return (
-    <Box flex={1} padding="m" justifyContent="center">
-      <Text variant="header" marginBottom="m" textAlign="center">
+    <Box flex={1} justifyContent="center" padding="m">
+      <Text marginBottom="m" textAlign="center" variant="header">
         Settings
       </Text>
-      
+
       <Button
-        title="Logout"
-        onPress={handleLogout}
         containerProps={{ marginTop: 'xl' }}
+        onPress={handleLogout}
+        title="Logout"
       />
     </Box>
   );

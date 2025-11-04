@@ -1,17 +1,16 @@
-
 import { configureStore } from '@reduxjs/toolkit';
 
 import { authSlice } from './slices/authSlice';
 import { uiSlice } from './slices/uiSlice';
 
 export const store = configureStore({
-  middleware: getDefaultMiddleware =>
+  middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
     }),
   reducer: {
-    [uiSlice.name]: uiSlice.reducer,
     [authSlice.name]: authSlice.reducer,
+    [uiSlice.name]: uiSlice.reducer,
   },
 });
 

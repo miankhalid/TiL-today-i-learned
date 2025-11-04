@@ -1,4 +1,8 @@
-import type { Session, SignInWithPasswordCredentials, SignUpWithPasswordCredentials } from '@supabase/supabase-js';
+import type {
+  Session,
+  SignInWithPasswordCredentials,
+  SignUpWithPasswordCredentials,
+} from '@supabase/supabase-js';
 
 import { useEffect, useState } from 'react';
 
@@ -6,9 +10,6 @@ import { supabase } from '@/services/supabase';
 
 export const login = async (credentials: SignInWithPasswordCredentials) => {
   const { data, error } = await supabase.auth.signInWithPassword(credentials);
-  console.log(data.user);
-  console.log(data.session);
-  console.log(data.weakPassword);
   if (error) {
     throw new Error(error.message);
   }
@@ -49,12 +50,16 @@ export const useAuth = () => {
     void getSession();
 
     if (!supabase) {
-      console.error('Supabase client is not initialized, cannot set up auth listener.');
+      console.error(
+        'Supabase client is not initialized, cannot set up auth listener.',
+      );
       return;
     }
-    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session ?? undefined);
-    });
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setSession(session ?? undefined);
+      },
+    );
 
     return () => {
       authListener.subscription.unsubscribe();

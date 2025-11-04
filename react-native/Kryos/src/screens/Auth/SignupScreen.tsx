@@ -18,15 +18,22 @@ import Text from '@/components/atoms/Text';
 
 import { authErrorKeys } from '@/constants/authErrorMessages';
 import { type SignupFormData, signupSchema } from '@/schemas/authSchema';
-import { clearError, setLoading } from '@/store/slices/authSlice';
+import { clearError, setError, setLoading } from '@/store/slices/authSlice';
 import { RootState } from '@/store/store';
 
-type SignupScreenNavigationProperty = StackNavigationProp<RootStackParamList, Paths.Signup>;
+type SignupScreenNavigationProperty = StackNavigationProp<
+  RootStackParamList,
+  Paths.Signup
+>;
 
-function SignupScreen({ navigation }: { navigation: SignupScreenNavigationProperty }) {
+function SignupScreen({
+  navigation,
+}: {
+  navigation: SignupScreenNavigationProperty;
+}) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const isLoading = useSelector<RootState, boolean>(s => s.auth.isLoading);
+  const isLoading = useSelector<RootState, boolean>((s) => s.auth.isLoading);
 
   const {
     control,
@@ -45,14 +52,13 @@ function SignupScreen({ navigation }: { navigation: SignupScreenNavigationProper
     dispatch(setLoading(true));
     dispatch(clearError());
     try {
-      await signup(data)
-        .then(() => {
-          Alert.alert(
-            'Signup Success',
-            'Please check your email to confirm your account.',
-          );
-          // After successful login, navigation will automatically happen to #HomeScreen
-        });
+      await signup(data).then(() => {
+        Alert.alert(
+          'Signup Success',
+          'Please check your email to confirm your account.',
+        );
+        // After successful login, navigation will automatically happen to #HomeScreen
+      });
     } catch (error: unknown) {
       if (error instanceof Error) {
         Alert.alert(

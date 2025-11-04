@@ -15,7 +15,9 @@ const instance: AxiosInstance = axios.create({
 instance.interceptors.request.use(
   async (config) => {
     // Get the session from the Supabase client to ensure we have the latest token
-    const { data: { session } } = await supabase.auth.getSession();
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
     const accessToken = session?.access_token;
 
     if (accessToken) {

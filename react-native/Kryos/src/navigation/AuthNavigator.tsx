@@ -12,7 +12,10 @@ const Stack = createStackNavigator<AuthStackParamList>();
 
 function AuthNavigator() {
   return (
-    <Stack.Navigator initialRouteName={Paths.Feed} screenOptions={{ headerShown: false }}>
+    <Stack.Navigator
+      initialRouteName={Paths.Feed}
+      screenOptions={{ headerShown: false }}
+    >
       <Stack.Screen component={FeedScreen} name={Paths.Feed} />
       <Stack.Screen component={LoginScreen} name={Paths.Login} />
       <Stack.Screen component={SignupScreen} name={Paths.Signup} />

@@ -11,7 +11,7 @@ import Button from '@/components/atoms/Button/Button';
 import Input from '@/components/atoms/Input/Input';
 import Text from '@/components/atoms/Text';
 
-function NewPostScreen({ navigation }: MainScreenProps<'Home'>) {
+function NewPostScreen({ navigation }: MainScreenProps<'NewPost'>) {
   const { loading: authLoading, session } = useAuth();
   const [content, setContent] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -40,7 +40,7 @@ function NewPostScreen({ navigation }: MainScreenProps<'Home'>) {
     try {
       await createPostWithRestAPI({
         content: content.trim(),
-        userId: currentUserId
+        userId: currentUserId,
       });
 
       setContent('');
@@ -57,7 +57,9 @@ function NewPostScreen({ navigation }: MainScreenProps<'Home'>) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Box flex={1} padding="m">
-        <Text marginBottom="m" variant="header">Create New Post</Text>
+        <Text marginBottom="m" variant="header">
+          Create New Post
+        </Text>
 
         <Input
           multiline

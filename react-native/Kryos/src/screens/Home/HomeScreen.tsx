@@ -21,11 +21,13 @@ function HomeScreen({ navigation }: MainScreenProps<'Home'>) {
       <Button
         containerProps={{ marginTop: 'm' }}
         onPress={handleNewPost}
-        title="New Post" />
+        title="New Post"
+      />
       <Button
         containerProps={{ marginTop: 'xl' }}
         onPress={handleLogout}
-        title="Logout" />
+        title="Logout"
+      />
     </Box>
   );
 }

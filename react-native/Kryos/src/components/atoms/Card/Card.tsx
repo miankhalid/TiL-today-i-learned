@@ -21,7 +21,8 @@ function Card({ children, variant = 'default', ...rest }: CardProps) {
         {children}
       </Box>
     );
-  } else { // default
+  } else {
+    // default
     return (
       <Box
         backgroundColor="bgSurface"

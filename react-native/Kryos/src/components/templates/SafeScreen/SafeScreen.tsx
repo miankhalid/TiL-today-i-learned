@@ -6,15 +6,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useThemeManager } from '@/theme/hooks/useTheme';
 
-type Properties = PropsWithChildren<
-  {} & Omit<SafeAreaViewProps, 'mode'>
->;
+type Properties = PropsWithChildren<{} & Omit<SafeAreaViewProps, 'mode'>>;
 
-function SafeScreen({
-  children = undefined,
-  style,
-  ...props
-}: Properties) {
+function SafeScreen({ children = undefined, style, ...props }: Properties) {
   const { navigationTheme, variant } = useThemeManager();
 
   return (

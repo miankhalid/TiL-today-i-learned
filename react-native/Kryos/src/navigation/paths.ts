@@ -8,7 +8,7 @@ export const enum Paths {
   Home = 'Home',
   NewPost = 'NewPost',
   Tab = 'Tab',
-  
+
   // Tab Navigator
   Create = 'Create',
   Loading = 'Loading',

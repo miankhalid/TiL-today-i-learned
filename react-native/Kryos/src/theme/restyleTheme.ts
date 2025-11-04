@@ -210,4 +210,3 @@ const darkTheme: Theme = {
 };
 
 export { darkTheme, theme };
-

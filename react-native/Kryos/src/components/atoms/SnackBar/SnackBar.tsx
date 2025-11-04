@@ -16,7 +16,13 @@ const SHORT_TIMEOUT_MS = 2000;
 const LONG_TIMEOUT_MS = 3500;
 const AUTO_DISAPPEAR_TIME_MS = 300;
 
-function SnackBar({ duration = 'short', message, onDismiss, variant = 'default', visible }: SnackBarProps) {
+function SnackBar({
+  duration = 'short',
+  message,
+  onDismiss,
+  variant = 'default',
+  visible,
+}: SnackBarProps) {
   const [isVisible, setIsVisible] = useState(visible);
 
   // Handle visibility changes
@@ -57,7 +63,12 @@ function SnackBar({ duration = 'short', message, onDismiss, variant = 'default',
   if (!isVisible) return null;
 
   // Determine colors based on variant
-  let backgroundColor: 'bgSurface' | 'statusError' | 'statusInfo' | 'statusSuccess' | 'statusWarning' = 'bgSurface';
+  let backgroundColor:
+    | 'bgSurface'
+    | 'statusError'
+    | 'statusInfo'
+    | 'statusSuccess'
+    | 'statusWarning' = 'bgSurface';
   let textColor: 'black' | 'textPrimary' | 'white' = 'textPrimary';
 
   switch (variant) {
@@ -97,11 +108,7 @@ function SnackBar({ duration = 'short', message, onDismiss, variant = 'default',
       zIndex={999}
     >
       <StatusBar backgroundColor={backgroundColor} />
-      <Text
-        color={textColor}
-        flex={1}
-        variant="body"
-      >
+      <Text color={textColor} flex={1} variant="body">
         {message}
       </Text>
     </Box>

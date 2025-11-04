@@ -16,7 +16,12 @@ import avatarPlaceholder from '../../theme/assets/images/default_avatar.png';
 
 function FeedScreen({ navigation }: AuthScreenProps<'Feed'>) {
   const renderPost = ({ item }: { item: any }) => (
-    <Box borderBottomColor="borderDefault" borderBottomWidth={1} key={item.id} padding="m">
+    <Box
+      borderBottomColor="borderDefault"
+      borderBottomWidth={1}
+      key={item.id}
+      padding="m"
+    >
       <Box alignItems="flex-start" flexDirection="row" marginBottom="m">
         <Image
           borderRadius="round"
@@ -27,13 +32,17 @@ function FeedScreen({ navigation }: AuthScreenProps<'Feed'>) {
         />
         <Box flex={1}>
           <Text variant="header">{item.user?.name || item.user_id}</Text>
-          <Text color="textSecondary" variant="caption">@{item.user?.username}</Text>
+          <Text color="textSecondary" variant="caption">
+            @{item.user?.username}
+          </Text>
         </Box>
       </Box>
       <Text marginBottom="s" variant="body">
         {item.content}
       </Text>
-      <Text color="textSecondary" variant="caption">{item.created_at}</Text>
+      <Text color="textSecondary" variant="caption">
+        {item.created_at}
+      </Text>
     </Box>
   );
 
@@ -49,12 +58,13 @@ function FeedScreen({ navigation }: AuthScreenProps<'Feed'>) {
             renderItem={renderPost}
             showsVerticalScrollIndicator={false}
           />
-          
+
           <Box
             backgroundColor="bgSurface"
             borderTopColor="borderDefault"
             borderTopWidth={1}
-            padding="m">
+            padding="m"
+          >
             <Text marginBottom="m" textAlign="center" variant="header">
               Join the Conversation
             </Text>

@@ -7,23 +7,25 @@ import instance from './instance';
 /**
  * Creates a new post using Supabase REST API via Axios
  */
-export const createPostWithRestAPI = async (postData: CreatePostData): Promise<Post> => {
+export const createPostWithRestAPI = async (
+  postData: CreatePostData,
+): Promise<Post> => {
   // Validate input data
   const validatedData = validateCreatePost({
     content: postData.content,
     parent_id: postData.parentId || null,
-    user_id: postData.userId
+    user_id: postData.userId,
   });
 
   try {
     const response = await instance.post(POSTS_API.CREATE(), validatedData, {
       headers: {
-        Prefer: 'return=representation'
-      }
+        Prefer: 'return=representation',
+      },
     });
 
     const postDataResult = response.data[0]; // Supabase REST API returns an array
-    
+
     // Validate the response directly from Supabase to match the schema
     return validatePost({
       content: postDataResult.content,
@@ -33,7 +35,7 @@ export const createPostWithRestAPI = async (postData: CreatePostData): Promise<P
       parent_id: postDataResult.parent_id,
       replies: [], // Will be populated if needed
       user: postDataResult.profiles || undefined,
-      user_id: postDataResult.user_id
+      user_id: postDataResult.user_id,
     });
   } catch (error: any) {
     console.error('Error creating post via REST API:', error);
@@ -49,18 +51,18 @@ export const fetchPostsFromRestAPI = async (): Promise<Post[]> => {
   try {
     const response = await instance.get(POSTS_API.GET_ALL(), {
       params: {
-        order: 'created_at.desc'
-      }
+        order: 'created_at.desc',
+      },
     });
 
     // Validate each post before returning
-    return response.data.map((post: any) => 
+    return response.data.map((post: any) =>
       validatePost({
         ...post,
         parent: post.parent || null,
         replies: post.replies || [],
-        user: post.profiles
-      })
+        user: post.profiles,
+      }),
     );
   } catch (error: any) {
     console.error('Error fetching posts via REST API:', error);
@@ -71,22 +73,24 @@ export const fetchPostsFromRestAPI = async (): Promise<Post[]> => {
 /**
  * Fetches posts by a specific user using Supabase REST API
  */
-export const fetchPostsByUserFromRestAPI = async (userId: string): Promise<Post[]> => {
+export const fetchPostsByUserFromRestAPI = async (
+  userId: string,
+): Promise<Post[]> => {
   try {
     const response = await instance.get(POSTS_API.GET_BY_USER(userId), {
       params: {
-        order: 'created_at.desc'
-      }
+        order: 'created_at.desc',
+      },
     });
 
     // Validate each post before returning
-    return response.data.map((post: any) => 
+    return response.data.map((post: any) =>
       validatePost({
         ...post,
         parent: post.parent || null,
         replies: post.replies || [],
-        user: post.profiles
-      })
+        user: post.profiles,
+      }),
     );
   } catch (error: any) {
     console.error('Error fetching posts by user via REST API:', error);
@@ -97,7 +101,9 @@ export const fetchPostsByUserFromRestAPI = async (userId: string): Promise<Post[
 /**
  * Fetches a single post by ID using Supabase REST API
  */
-export const fetchPostByIdFromRestAPI = async (postId: string): Promise<null | Post> => {
+export const fetchPostByIdFromRestAPI = async (
+  postId: string,
+): Promise<null | Post> => {
   try {
     const response = await instance.get(POSTS_API.GET_BY_ID(postId));
 
@@ -111,7 +117,7 @@ export const fetchPostByIdFromRestAPI = async (postId: string): Promise<null | P
       ...post,
       parent: post.parent || null,
       replies: post.replies || [],
-      user: post.profiles
+      user: post.profiles,
     });
   } catch (error: any) {
     console.error('Error fetching post by ID via REST API:', error);
@@ -130,4 +136,3 @@ export const deletePostFromRestAPI = async (postId: string): Promise<void> => {
     throw new Error(error.response?.data?.message || error.message);
   }
 };
-

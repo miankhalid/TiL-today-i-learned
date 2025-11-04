@@ -4,7 +4,7 @@ export type CreatePostData = {
   content: string;
   parentId?: null | string;
   userId: string;
-}
+};
 
 // User type based on dummy data and potential Supabase user structure
 export type User = {
@@ -13,7 +13,7 @@ export type User = {
   image?: null | string;
   name: string;
   username: string;
-}
+};
 
 // Post type based on dummy data
 export type Post = {
@@ -25,7 +25,7 @@ export type Post = {
   replies?: Post[]; // Array of replies
   user?: User; // Nested user object for convenience
   user_id: string;
-}
+};
 
 // Extend Supabase user type if needed for auth context
 export type AppUser = {

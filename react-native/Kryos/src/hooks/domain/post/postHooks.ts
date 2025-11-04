@@ -2,7 +2,11 @@ import type { CreatePostData, Post } from '@/types/types';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { createPostWithRestAPI, fetchPostsByUserFromRestAPI, fetchPostsFromRestAPI } from '@/services/posts';
+import {
+  createPostWithRestAPI,
+  fetchPostsByUserFromRestAPI,
+  fetchPostsFromRestAPI,
+} from '@/services/posts';
 
 /**
  * Custom hook to fetch posts

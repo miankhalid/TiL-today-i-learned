@@ -32,8 +32,6 @@ function ThemeProvider({ children, storage }: Properties) {
     (storage.getString('theme') as ThemeVariant) || 'light',
   );
 
-
-
   const changeTheme = useCallback(
     (nextVariant: ThemeVariant) => {
       setVariant(nextVariant);
@@ -65,7 +63,9 @@ function ThemeProvider({ children, storage }: Properties) {
 
   return (
     <ThemeContext.Provider value={value}>
-      <RestyleThemeProvider theme={currentTheme}>{children}</RestyleThemeProvider>
+      <RestyleThemeProvider theme={currentTheme}>
+        {children}
+      </RestyleThemeProvider>
     </ThemeContext.Provider>
   );
 }

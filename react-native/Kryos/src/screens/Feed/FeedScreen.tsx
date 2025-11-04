@@ -3,6 +3,8 @@ import type { AuthScreenProps } from '@/navigation/types';
 import { FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { Paths } from '@/navigation/paths';
+
 import Box from '@/components/atoms/Box';
 import Button from '@/components/atoms/Button/Button';
 import Image from '@/components/atoms/Image';
@@ -56,16 +58,17 @@ function FeedScreen({ navigation }: AuthScreenProps<'Feed'>) {
             <Text marginBottom="m" textAlign="center" variant="header">
               Join the Conversation
             </Text>
+
             <Button
               containerProps={{ marginBottom: 's' }}
               onPress={() => {
-                navigation.navigate('Login');
+                navigation.navigate(Paths.Login);
               }}
               title="Login"
             />
             <Button
               onPress={() => {
-                navigation.navigate('Signup');
+                navigation.navigate(Paths.Signup);
               }}
               title="Sign Up"
               variant="text"

@@ -8,6 +8,7 @@ import { Alert } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { signup } from '@/hooks/auth/useAuth';
+import { Paths } from '@/navigation/paths';
 
 import Box from '@/components/atoms/Box';
 import Button from '@/components/atoms/Button/Button';
@@ -20,7 +21,7 @@ import { type SignupFormData, signupSchema } from '@/schemas/authSchema';
 import { clearError, setLoading } from '@/store/slices/authSlice';
 import { RootState } from '@/store/store';
 
-type SignupScreenNavigationProperty = StackNavigationProp<RootStackParamList, 'Signup'>;
+type SignupScreenNavigationProperty = StackNavigationProp<RootStackParamList, Paths.Signup>;
 
 function SignupScreen({ navigation }: { navigation: SignupScreenNavigationProperty }) {
   const { t } = useTranslation();
@@ -135,7 +136,7 @@ function SignupScreen({ navigation }: { navigation: SignupScreenNavigationProper
       <Button
         containerProps={{ marginBottom: 's' }}
         onPress={() => {
-          navigation.navigate('Login');
+          navigation.navigate(Paths.Login);
         }}
         title="Already have an account? Login"
         variant="text"
@@ -143,7 +144,7 @@ function SignupScreen({ navigation }: { navigation: SignupScreenNavigationProper
 
       <Button
         onPress={() => {
-          navigation.navigate('Feed');
+          navigation.navigate(Paths.Feed);
         }}
         title="Back to Feed"
         variant="text"

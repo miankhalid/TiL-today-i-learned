@@ -15,6 +15,7 @@ import Box from '@/components/atoms/Box';
 import Button from '@/components/atoms/Button/Button';
 import Input from '@/components/atoms/Input/Input';
 import PasswordInput from '@/components/atoms/Input/PasswordInput';
+import SnackBar from '@/components/atoms/SnackBar/SnackBar';
 import Text from '@/components/atoms/Text';
 
 import { authErrorKeys } from '@/constants/authErrorMessages';
@@ -22,7 +23,7 @@ import { type LoginFormData, loginSchema } from '@/schemas/authSchema';
 import { clearError, setLoading } from '@/store/slices/authSlice';
 import { RootState } from '@/store/store';
 
-type LoginScreenNavigationProperty = StackNavigationProp<RootStackParamList, Paths.Home>;
+type LoginScreenNavigationProperty = StackNavigationProp<RootStackParamList, Paths.Login>;
 
 function LoginScreen({ navigation }: { navigation: LoginScreenNavigationProperty }) {
   const { t } = useTranslation();
@@ -128,6 +129,8 @@ function LoginScreen({ navigation }: { navigation: LoginScreenNavigationProperty
         title="Back to Feed"
         variant="text"
       />
+
+
     </Box>
   );
 }

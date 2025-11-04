@@ -1,3 +1,4 @@
+import type { TabParamList } from './tabTypes';
 import type { NavigatorScreenParams } from '@react-navigation/native';
 import type { StackScreenProps } from '@react-navigation/stack';
 
@@ -31,7 +32,6 @@ export type MainScreenProps<T extends keyof MainStackParamList> = StackScreenPro
 >;
 
 export type MainStackParamList = {
-  Feed: undefined;
-  Home: undefined;
-  NewPost: undefined;
+  [Paths.NewPost]: undefined;
+  [Paths.Tab]: NavigatorScreenParams<TabParamList>;
 };

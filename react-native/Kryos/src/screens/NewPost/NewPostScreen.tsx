@@ -43,6 +43,7 @@ function NewPostScreen({ navigation }: MainScreenProps<'Home'>) {
         userId: currentUserId
       });
 
+      setContent('');
       // Navigate back to home or feed after successful creation
       navigation.goBack();
     } catch (error_: any) {
@@ -73,19 +74,19 @@ function NewPostScreen({ navigation }: MainScreenProps<'Home'>) {
           </Text>
         ) : null}
 
-        <Box flexDirection="row" justifyContent="flex-end" marginTop="m">
-          <Button
-            disabled={isLoading}
-            onPress={() => navigation.goBack()}
-            title="Cancel"
-            variant="text"
-          />
+        <Box flexDirection="column" justifyContent="flex-end" marginTop="m">
           <Button
             containerProps={{ marginLeft: 's' }}
             disabled={isLoading || !content.trim() || !canPost}
             loading={isLoading}
             onPress={handleCreatePost}
             title="Post"
+          />
+          <Button
+            disabled={isLoading}
+            onPress={() => navigation.goBack()}
+            title="Cancel"
+            variant="text"
           />
         </Box>
       </Box>

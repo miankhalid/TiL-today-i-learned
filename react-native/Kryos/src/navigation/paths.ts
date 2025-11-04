@@ -7,4 +7,10 @@ export const enum Paths {
   Feed = 'Feed',
   Home = 'Home',
   NewPost = 'NewPost',
+  Tab = 'Tab',
+  
+  // Tab Navigator
+  Create = 'Create',
+  Loading = 'Loading',
+  Settings = 'Settings',
 }

@@ -23,5 +23,16 @@
     "passwords_do_not_match": "Passwords do not match",
     "signup_error": "Signup failed. Please try again.",
     "login_error": "Login failed. Please check your credentials."
+  },
+  "tabs": {
+    "feed": {
+      "title": "Feed"
+    },
+    "create": {
+      "title": "Create"
+    },
+    "settings": {
+      "title": "Settings"
+    }
   }
 }

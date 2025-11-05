@@ -41,6 +41,20 @@ export const Button = ({
 
   // Variant configurations
   const variantStyles = {
+    caution: {
+      backgroundColor: 'warning' as const,
+      borderRadius: 'm' as const,
+      paddingHorizontal: 'l' as const,
+      paddingVertical: 'm' as const,
+      textColor: 'white' as const,
+    },
+    danger: {
+      backgroundColor: 'error' as const,
+      borderRadius: 'm' as const,
+      paddingHorizontal: 'l' as const,
+      paddingVertical: 'm' as const,
+      textColor: 'white' as const,
+    },
     primary: {
       backgroundColor: 'bgPrimary' as const,
       borderRadius: 'm' as const,

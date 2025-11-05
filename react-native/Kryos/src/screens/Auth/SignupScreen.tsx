@@ -150,7 +150,7 @@ function SignupScreen({
 
       <Button
         onPress={() => {
-          navigation.navigate(Paths.Feed);
+          navigation.navigate(Paths.DummyFeed);
         }}
         title="Back to Feed"
         variant="text"

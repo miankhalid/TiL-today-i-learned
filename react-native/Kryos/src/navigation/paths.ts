@@ -4,13 +4,14 @@ export const enum Paths {
   Signup = 'Signup',
 
   // Main Stack
-  Feed = 'Feed',
+  DummyFeed = 'DummyFeed',
   Home = 'Home',
   NewPost = 'NewPost',
   Tab = 'Tab',
 
   // Tab Navigator
   Create = 'Create',
+  Feeds = 'Feeds',
   Loading = 'Loading',
   Settings = 'Settings',
 }

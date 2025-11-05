@@ -6,7 +6,7 @@ export const POSTS_API = {
   BASE: '/posts',
   
   // Get all posts
-  GET_ALL: () => '/posts?select=*,profiles!inner(*)',
+  GET_ALL: () => '/posts?select=*,profiles!inner(*)&order=created_at.desc',
   
   // Get posts by user
   GET_BY_USER: (userId: string) => `/posts?select=*,profiles!inner(*)&user_id=eq.${userId}`,

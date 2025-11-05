@@ -8,6 +8,7 @@ import { TabParamList } from '@/navigation/tabTypes';
 import { theme } from '@/theme/restyleTheme';
 
 import { LoadingScreen } from '@/screens';
+import FeedsScreen from '@/screens/Feed/FeedsScreen';
 import NewPostScreen from '@/screens/NewPost/NewPostScreen';
 import SettingsScreen from '@/screens/Settings/SettingsScreen';
 
@@ -28,7 +29,7 @@ function TabNavigator() {
             case Paths.Create:
               iconName = focused ? 'add-card' : 'add-card';
               break;
-            case Paths.Loading:
+            case Paths.Feeds:
               iconName = focused ? 'forum' : 'forum';
               break;
             case Paths.Settings:
@@ -45,8 +46,8 @@ function TabNavigator() {
       })}
     >
       <Tab.Screen 
-        component={LoadingScreen} 
-        name={Paths.Loading} 
+        component={FeedsScreen} 
+        name={Paths.Feeds} 
         options={{ 
           title: t('tabs.feed.title'),
         }} 

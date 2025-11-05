@@ -7,6 +7,8 @@ import { Provider } from 'react-redux';
 import ApplicationNavigator from '@/navigation/Application';
 import { storage } from '@/services/mmkv';
 import { ThemeProvider } from '@/theme';
+// this is especially needed to ensure that @i18n is initialized
+import '@/translations';
 
 import { store } from '@/store';
 

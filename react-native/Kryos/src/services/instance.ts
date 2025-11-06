@@ -3,6 +3,8 @@ import axios, { type AxiosInstance } from 'axios';
 
 import { supabase } from './supabase';
 
+const HTTP_STATUS_UNAUTHORIZED = 401; // Unauthorized
+
 const instance: AxiosInstance = axios.create({
   baseURL: `${SUPABASE_URL}/rest/v1`,
   headers: {
@@ -37,13 +39,17 @@ instance.interceptors.response.use(
     // and update them in storage if needed
     return response;
   },
-  (error) => {
+  (error: unknown) => {
     // Handle specific error cases
-    if (error.response?.status === 401) {
-      // Unauthorized - possibly token expired
-      console.log('Unauthorized request - token may have expired');
+    if (error && typeof error === 'object' && 'response' in error) {
+      const axiosError = error as { response?: { status?: number } };
+      if (axiosError.response?.status === HTTP_STATUS_UNAUTHORIZED) {
+        // Unauthorized - possibly token expired
+        console.warn('Unauthorized request - token may have expired');
+      }
     }
-    return Promise.reject(error);
+    const errorToReturn = error instanceof Error ? error : new Error('An error occurred');
+    return Promise.reject(errorToReturn);
   },
 );
 

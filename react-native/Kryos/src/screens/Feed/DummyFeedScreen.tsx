@@ -11,11 +11,12 @@ import Image from '@/components/atoms/Image';
 import Text from '@/components/atoms/Text';
 
 import { dummyPosts } from '@/dummy/dummyData';
+import { Post } from '@/types/types';
 
 import avatarPlaceholder from '../../theme/assets/images/default_avatar.png';
 
 function FeedScreen({ navigation }: AuthScreenProps<'Feed'>) {
-  const renderPost = ({ item }: { item: any }) => (
+  const renderPost = ({ item }: { item: Post }) => (
     <Box
       borderBottomColor="borderDefault"
       borderBottomWidth={1}
@@ -27,11 +28,11 @@ function FeedScreen({ navigation }: AuthScreenProps<'Feed'>) {
           borderRadius="round"
           height={40}
           marginRight="s"
-          source={{ uri: item.user?.image || avatarPlaceholder }}
+          source={{ uri: item.user?.image ?? avatarPlaceholder }}
           width={40}
         />
         <Box flex={1}>
-          <Text variant="header">{item.user?.name || item.user_id}</Text>
+          <Text variant="header">{item.user?.name ?? item.user_id}</Text>
           <Text color="textSecondary" variant="caption">
             @{item.user?.username}
           </Text>

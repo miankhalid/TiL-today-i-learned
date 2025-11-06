@@ -28,10 +28,10 @@ export type ButtonProps = {
 
 // Button Component
 export const Button = ({
-  containerProps,
+  containerProps = {},
   disabled = false,
   loading = false,
-  rightIcon,
+  rightIcon = undefined,
   title,
   variant = 'primary',
   ...props

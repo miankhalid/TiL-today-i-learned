@@ -16,10 +16,10 @@ import { getInitials } from '@/utils/textUtilities';
 // Simplified renderPost function showing only essential information
 const renderPost = ({ item }) => {
   // Extract profile data from the nested structure
-  const userProfile = item.profiles || {};
+  const userProfile = item.profiles ?? {};
   
   // Get initials for placeholder
-  const initials = getInitials(userProfile.full_name || userProfile.username);
+  const initials = getInitials(userProfile.full_name ?? userProfile.username);
 
   return (
     <Box
@@ -48,16 +48,16 @@ const renderPost = ({ item }) => {
             />
           ) : (
             <Text fontSize={16} fontWeight="bold" textAlign="center">
-              {initials || '?'}
+              {initials ?? '?'}
             </Text>
           )}
         </Box>
         <Box flex={1}>
           <Text variant="header">
-            {userProfile.full_name || userProfile.username || 'Unknown User'}
+            {userProfile.full_name ?? userProfile.username ?? 'Unknown User'}
           </Text>
           <Text color="textSecondary" variant="caption">
-            @{userProfile.username || 'username'}
+            @{userProfile.username ?? 'username'}
           </Text>
         </Box>
       </Box>

@@ -46,9 +46,15 @@ function NewPostScreen({ navigation }: MainScreenProps<'NewPost'>) {
       setContent('');
       // Navigate back to home or feed after successful creation
       navigation.goBack();
-    } catch (error_: any) {
+    } catch (error_: unknown) {
       console.error('Error creating post:', error_);
-      setError(error_.message || 'Failed to create post');
+      const errorMessage = 
+        error_ instanceof Error 
+          ? error_.message 
+          : typeof error_ === 'string' 
+            ? error_ 
+            : 'Failed to create post';
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }

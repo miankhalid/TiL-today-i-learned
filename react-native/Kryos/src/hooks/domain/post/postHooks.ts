@@ -13,7 +13,7 @@ import {
  */
 export const usePosts = () => {
   return useQuery<Post[], Error>({
-    queryFn: () => fetchPostsFromRestAPI(),
+    queryFn: async () => await fetchPostsFromRestAPI(),
     queryKey: ['posts'],
   });
 };

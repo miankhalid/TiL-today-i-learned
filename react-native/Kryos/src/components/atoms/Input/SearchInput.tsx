@@ -12,7 +12,7 @@ export type SearchInputProps = {
 
 // Search Input Component
 export const SearchInput = forwardRef<RNTextInput, SearchInputProps>(
-  ({ onSearch, ...props }, reference) => {
+  ({ onSearch = undefined, ...props }, reference) => {
     return (
       <Input
         clearable

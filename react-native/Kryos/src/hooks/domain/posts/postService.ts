@@ -1,59 +1,63 @@
 import { POSTS_API } from '@/services/apiEndpoints';
 import instance from '@/services/instance';
 
+import { Post } from '@/types/types';
+
 export const PostServices = {
-  addComment: async (commentData: { content: string; post_id: string; user_id?: string }) => {
-    const response = await instance.post(POSTS_API.ADD_COMMENT(), commentData);
+  addComment: async (commentData: { content: string; post_id: string; user_id?: string }): Promise<Post> => {
+    const response = await instance.post<Post>(POSTS_API.ADD_COMMENT(), commentData);
     return response.data;
   },
 
-  create: async (postData: { content: string; parent_id?: string; user_id?: string; }) => {
-    const response = await instance.post(POSTS_API.CREATE(), postData);
+  create: async (postData: { content: string; parent_id?: string; user_id?: string; }): Promise<Post> => {
+    const response = await instance.post<Post>(POSTS_API.CREATE(), postData);
     return response.data;
   },
 
-  delete: async (postId: string) => {
-    const response = await instance.delete(POSTS_API.DELETE(postId));
+  delete: async (postId: string): Promise<void> => {
+    await instance.delete(POSTS_API.DELETE(postId));
+    // Return void for delete operations
+    return;
+  },
+
+  fetchAll: async (): Promise<Post[]> => {
+    const response = await instance.get<Post[]>(POSTS_API.GET_ALL());
     return response.data;
   },
 
-  fetchAll: async () => {
-    const response = await instance.get(POSTS_API.GET_ALL());
+  fetchById: async (postId: string): Promise<Post> => {
+    const response = await instance.get<Post>(POSTS_API.GET_BY_ID(postId));
     return response.data;
   },
 
-  fetchById: async (postId: string) => {
-    const response = await instance.get(POSTS_API.GET_BY_ID(postId));
+  fetchByUser: async (userId: string): Promise<Post[]> => {
+    const response = await instance.get<Post[]>(POSTS_API.GET_BY_USER(userId));
     return response.data;
   },
 
-  fetchByUser: async (userId: string) => {
-    const response = await instance.get(POSTS_API.GET_BY_USER(userId));
+  fetchComments: async (postId: string): Promise<Post[]> => {
+    const response = await instance.get<Post[]>(POSTS_API.GET_COMMENTS(postId));
     return response.data;
   },
 
-  fetchComments: async (postId: string) => {
-    const response = await instance.get(POSTS_API.GET_COMMENTS(postId));
+  fetchUserLikes: async (userId: string): Promise<Post[]> => {
+    const response = await instance.get<Post[]>(POSTS_API.USER_LIKES(userId));
     return response.data;
   },
 
-  fetchUserLikes: async (userId: string) => {
-    const response = await instance.get(POSTS_API.USER_LIKES(userId));
+  likePost: async (likeData: { post_id: string; user_id?: string }): Promise<Post> => {
+    const response = await instance.post<Post>(POSTS_API.LIKE_POST(), likeData);
     return response.data;
   },
 
-  likePost: async (likeData: { post_id: string; user_id?: string }) => {
-    const response = await instance.post(POSTS_API.LIKE_POST(), likeData);
-    return response.data;
+  unlikePost: async (postId: string, userId: string): Promise<void> => {
+    await instance.delete(POSTS_API.UNLIKE_POST(postId, userId));
+    // Return void for unlike operations
+    return;
   },
 
-  unlikePost: async (postId: string, userId: string) => {
-    const response = await instance.delete(POSTS_API.UNLIKE_POST(postId, userId));
-    return response.data;
-  },
-
-  update: async (postId: string, postData: Partial<{ content: string; parent_id: string }>) => {
-    const response = await instance.patch(POSTS_API.UPDATE(postId), postData);
+  update: async (postId: string, postData: Partial<{ content: string; parent_id: string }>): Promise<Post> => {
+    const response = await instance.patch<Post>(POSTS_API.UPDATE(postId), postData);
     return response.data;
   },
 };

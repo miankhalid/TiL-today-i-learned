@@ -33,16 +33,16 @@ export type InputProps = {
 export const Input = forwardRef<RNTextInput, InputProps>(
   (
     {
-      characterLimit,
+      characterLimit = undefined,
       clearable = false,
-      containerProps,
+      containerProps = {},
       editable = true,
-      error,
-      hint,
-      label,
-      leftIcon,
+      error = undefined,
+      hint = undefined,
+      label = undefined,
+      leftIcon = undefined,
       onChangeText,
-      rightIcon,
+      rightIcon = undefined,
       value,
       variant = 'outlined',
       ...props

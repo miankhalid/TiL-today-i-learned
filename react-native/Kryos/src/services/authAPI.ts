@@ -12,7 +12,7 @@ export const getAccessToken = (): null | string => {
   );
 
   if (accessTokenKey) {
-    return storage.getString(accessTokenKey) || null;
+    return storage.getString(accessTokenKey) ?? null;
   }
 
   return null;

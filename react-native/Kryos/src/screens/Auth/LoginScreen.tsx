@@ -57,9 +57,9 @@ function LoginScreen({
       if (error instanceof Error) {
         Alert.alert(
           'Login Error',
-          error.message || t(authErrorKeys.LOGIN_ERROR),
+          error.message ?? t(authErrorKeys.LOGIN_ERROR),
         );
-        dispatch(setError(error.message || t(authErrorKeys.LOGIN_ERROR)));
+        dispatch(setError(error.message ?? t(authErrorKeys.LOGIN_ERROR)));
       }
     } finally {
       dispatch(setLoading(false));

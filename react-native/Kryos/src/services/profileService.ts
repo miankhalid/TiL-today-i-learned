@@ -74,7 +74,7 @@ export const updateProfile = async (profileData: UpdateProfileData): Promise<Pro
   const userEmail = session.user.email ?? '';
 
   // Check if profile exists, if not create it
-  const { data: existingProfile, error: fetchError } = await supabase
+  const { error: fetchError } = await supabase
     .from('profiles')
     .select('id')
     .eq('id', userId)

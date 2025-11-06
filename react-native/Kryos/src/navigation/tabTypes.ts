@@ -1,5 +1,5 @@
 export type TabParamList = {
   Create: undefined;
-  Feed: undefined;
+  Feeds: undefined;
   Settings: undefined;
 };

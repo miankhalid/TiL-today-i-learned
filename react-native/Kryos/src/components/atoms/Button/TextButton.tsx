@@ -18,9 +18,9 @@ export type TextButtonProps = {
 // TextButton Component - For "Already have an account? Login" style buttons
 export const TextButton = ({
   actionText,
-  containerProps,
+  containerProps = {},
   disabled = false,
-  prefixText,
+  prefixText = '',
   ...props
 }: TextButtonProps) => {
   return (

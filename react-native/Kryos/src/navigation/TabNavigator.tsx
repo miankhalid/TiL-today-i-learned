@@ -7,7 +7,6 @@ import { Paths } from '@/navigation/paths';
 import { TabParamList } from '@/navigation/tabTypes';
 import { theme } from '@/theme/restyleTheme';
 
-import { LoadingScreen } from '@/screens';
 import FeedsScreen from '@/screens/Feed/FeedsScreen';
 import NewPostScreen from '@/screens/NewPost/NewPostScreen';
 import SettingsScreen from '@/screens/Settings/SettingsScreen';
@@ -25,7 +24,7 @@ function TabNavigator() {
         tabBarActiveTintColor: colors.bgPrimary,  // primary color from theme
         tabBarIcon: ({ color, focused, size }) => {
           let iconName = '';
-          switch (route.name) {
+          switch (route.name as string) {
             case Paths.Create:
               iconName = focused ? 'add-card' : 'add-card';
               break;

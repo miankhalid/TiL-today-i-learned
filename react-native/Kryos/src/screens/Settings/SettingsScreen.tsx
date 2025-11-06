@@ -64,7 +64,7 @@ function SettingsScreen() {
 
   const handleLogout = () => {
     dispatch(updateProfileStart()); // Clear profile state on logout
-    logout().catch(console.error);
+    void logout().catch(console.error);
   };
 
   // Get initials for placeholder

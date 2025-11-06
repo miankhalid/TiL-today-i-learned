@@ -13,12 +13,12 @@ export const createPostWithRestAPI = async (
   // Validate input data
   const validatedData = validateCreatePost({
     content: postData.content,
-    parent_id: postData.parentId || null,
+    parent_id: postData.parentId ?? null,
     user_id: postData.userId,
   });
 
   try {
-    const response = await instance.post(POSTS_API.CREATE(), validatedData, {
+    const response = await instance.post<Post[]>(POSTS_API.CREATE(), validatedData, {
       headers: {
         Prefer: 'return=representation',
       },
@@ -34,13 +34,19 @@ export const createPostWithRestAPI = async (
       parent: null, // Will be populated if needed
       parent_id: postDataResult.parent_id,
       replies: [], // Will be populated if needed
-      user: postDataResult.profiles || undefined,
+      user: postDataResult.profiles ?? undefined,
       user_id: postDataResult.user_id,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error creating post via REST API:', error);
     // Note: Importing z would create a circular dependency, so we'll just log the error
-    throw new Error(error.response?.data?.message || error.message);
+    const errorMessage = 
+      error instanceof Error && 'response' in error 
+        ? (error.response as any)?.data?.message 
+        : error instanceof Error 
+          ? error.message 
+          : 'Failed to create post';
+    throw new Error(errorMessage ?? 'Failed to create post');
   }
 };
 
@@ -49,7 +55,7 @@ export const createPostWithRestAPI = async (
  */
 export const fetchPostsFromRestAPI = async (): Promise<Post[]> => {
   try {
-    const response = await instance.get(POSTS_API.GET_ALL(), {
+    const response = await instance.get<Post[]>(POSTS_API.GET_ALL(), {
       params: {
         order: 'created_at.desc',
       },
@@ -59,14 +65,20 @@ export const fetchPostsFromRestAPI = async (): Promise<Post[]> => {
     return response.data.map((post: any) =>
       validatePost({
         ...post,
-        parent: post.parent || null,
-        replies: post.replies || [],
+        parent: post.parent ?? null,
+        replies: post.replies ?? [],
         user: post.profiles,
       }),
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error fetching posts via REST API:', error);
-    throw new Error(error.response?.data?.message || error.message);
+    const errorMessage = 
+      error instanceof Error && 'response' in error 
+        ? (error.response as any)?.data?.message 
+        : error instanceof Error 
+          ? error.message 
+          : 'Failed to fetch posts';
+    throw new Error(errorMessage ?? 'Failed to fetch posts');
   }
 };
 
@@ -77,7 +89,7 @@ export const fetchPostsByUserFromRestAPI = async (
   userId: string,
 ): Promise<Post[]> => {
   try {
-    const response = await instance.get(POSTS_API.GET_BY_USER(userId), {
+    const response = await instance.get<Post[]>(POSTS_API.GET_BY_USER(userId), {
       params: {
         order: 'created_at.desc',
       },
@@ -87,14 +99,20 @@ export const fetchPostsByUserFromRestAPI = async (
     return response.data.map((post: any) =>
       validatePost({
         ...post,
-        parent: post.parent || null,
-        replies: post.replies || [],
+        parent: post.parent ?? null,
+        replies: post.replies ?? [],
         user: post.profiles,
       }),
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error fetching posts by user via REST API:', error);
-    throw new Error(error.response?.data?.message || error.message);
+    const errorMessage = 
+      error instanceof Error && 'response' in error 
+        ? (error.response as any)?.data?.message 
+        : error instanceof Error 
+          ? error.message 
+          : 'Failed to fetch posts by user';
+    throw new Error(errorMessage ?? 'Failed to fetch posts by user');
   }
 };
 
@@ -105,7 +123,7 @@ export const fetchPostByIdFromRestAPI = async (
   postId: string,
 ): Promise<null | Post> => {
   try {
-    const response = await instance.get(POSTS_API.GET_BY_ID(postId));
+    const response = await instance.get<Post[]>(POSTS_API.GET_BY_ID(postId));
 
     if (response.data.length === 0) {
       return null;
@@ -115,13 +133,19 @@ export const fetchPostByIdFromRestAPI = async (
     // Validate the post before returning
     return validatePost({
       ...post,
-      parent: post.parent || null,
-      replies: post.replies || [],
+      parent: post.parent ?? null,
+      replies: post.replies ?? [],
       user: post.profiles,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error fetching post by ID via REST API:', error);
-    throw new Error(error.response?.data?.message || error.message);
+    const errorMessage = 
+      error instanceof Error && 'response' in error 
+        ? (error.response as any)?.data?.message 
+        : error instanceof Error 
+          ? error.message 
+          : 'Failed to fetch post by ID';
+    throw new Error(errorMessage ?? 'Failed to fetch post by ID');
   }
 };
 
@@ -131,8 +155,14 @@ export const fetchPostByIdFromRestAPI = async (
 export const deletePostFromRestAPI = async (postId: string): Promise<void> => {
   try {
     await instance.delete(POSTS_API.DELETE(postId));
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error deleting post via REST API:', error);
-    throw new Error(error.response?.data?.message || error.message);
+    const errorMessage = 
+      error instanceof Error && 'response' in error 
+        ? (error.response as any)?.data?.message 
+        : error instanceof Error 
+          ? error.message 
+          : 'Failed to delete post';
+    throw new Error(errorMessage ?? 'Failed to delete post');
   }
 };

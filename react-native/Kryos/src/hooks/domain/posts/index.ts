@@ -1,17 +1,18 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
 import { PostServices } from './postService';
 
 export const usePosts = () => {
   return useQuery({
+    queryFn: async () => await PostServices.fetchAll(),
     queryKey: ['posts'],
-    queryFn: PostServices.fetchAll,
   });
 };
 
 export const usePost = (postId: string) => {
   return useQuery({
+    queryFn: async () => await PostServices.fetchById(postId),
     queryKey: ['posts', postId],
-    queryFn: () => PostServices.fetchById(postId),
   });
 };
 
@@ -19,7 +20,7 @@ export const useCreatePost = () => {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: PostServices.create,
+    mutationFn: async (postData) => await PostServices.create(postData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['posts'] });
     },
@@ -30,8 +31,8 @@ export const useUpdatePost = () => {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: ({ postId, postData }: { postId: string; postData: Partial<{ content: string; parent_id: string }> }) => 
-      PostServices.update(postId, postData),
+    mutationFn: async ({ postData, postId }: { postData: Partial<{ content: string; parent_id: string }>; postId: string; }) => 
+      await PostServices.update(postId, postData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['posts'] });
     },
@@ -42,7 +43,7 @@ export const useDeletePost = () => {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: PostServices.delete,
+    mutationFn: async (postId) => await PostServices.delete(postId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['posts'] });
     },

@@ -63,9 +63,9 @@ function SignupScreen({
       if (error instanceof Error) {
         Alert.alert(
           'Signup Error',
-          error.message || t(authErrorKeys.SIGNUP_ERROR),
+          error.message ?? t(authErrorKeys.SIGNUP_ERROR),
         );
-        dispatch(setError(error.message || t(authErrorKeys.SIGNUP_ERROR)));
+        dispatch(setError(error.message ?? t(authErrorKeys.SIGNUP_ERROR)));
       }
     } finally {
       dispatch(setLoading(false));

@@ -17,8 +17,8 @@ export type MultilineInputProps = {
 export const MultilineInput = forwardRef<RNTextInput, MultilineInputProps>(
   (
     {
-      maxHeight = DEFAULT_MAX_HEIGHT,
-      minHeight = DEFAULT_MIN_HEIGHT,
+      maxHeight,
+      minHeight,
       style,
       ...props
     },
@@ -43,5 +43,9 @@ export const MultilineInput = forwardRef<RNTextInput, MultilineInputProps>(
 );
 
 MultilineInput.displayName = 'MultilineInput';
+MultilineInput.defaultProps = {
+  maxHeight: DEFAULT_MAX_HEIGHT,
+  minHeight: DEFAULT_MIN_HEIGHT,
+};
 
 export default MultilineInput;

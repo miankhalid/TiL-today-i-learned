@@ -28,7 +28,7 @@ export const useCreatePost = () => {
     mutationFn: (postData: CreatePostData) => createPostWithRestAPI(postData),
     onSuccess: () => {
       // Invalidate and refetch posts
-      queryClient.invalidateQueries({ queryKey: ['posts'] });
+      void queryClient.invalidateQueries({ queryKey: ['posts'] });
     },
   });
 };

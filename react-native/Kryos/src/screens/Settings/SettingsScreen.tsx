@@ -5,11 +5,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { logout } from '@/hooks/auth/useAuth';
 import { useAuthWithProfile } from '@/hooks/auth/useAuthWithProfile';
 import { updateProfile, UpdateProfileData } from '@/services/profileService';
-import { getInitials } from '@/utils/textUtilities';
 
+import Avatar from '@/components/atoms/Avatar/Avatar';
 import Box from '@/components/atoms/Box';
 import Button from '@/components/atoms/Button/Button';
-import Image from '@/components/atoms/Image';
 import Input from '@/components/atoms/Input/Input';
 import Text from '@/components/atoms/Text';
 
@@ -67,9 +66,6 @@ function SettingsScreen() {
     void logout().catch(console.error);
   };
 
-  // Get initials for placeholder
-  const initials = getInitials(profile?.full_name);
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView>
@@ -78,28 +74,12 @@ function SettingsScreen() {
             Profile Settings
           </Text>
           <Box borderRadius="m" marginBottom="s" padding="m">
-            <Box
-              alignItems="center"
-              alignSelf="center"
-              backgroundColor="gray3"
-              borderRadius="round"
-              height={100}
-              justifyContent="center"
-              marginBottom="xl"
-              width={100}
-            >
-              {profile?.avatar_url ? (
-                <Image
-                  borderRadius="round"
-                  height={100}
-                  source={{ uri: profile.avatar_url }}
-                  width={100}
-                />
-              ) : (
-                <Text variant="header">
-                  {initials ?? '?'}
-                </Text>
-              )}
+            <Box alignSelf="center" marginBottom="xl">
+              <Avatar
+                imageUrl={profile?.avatar_url}
+                name={profile?.full_name}
+                size={100}
+              />
             </Box>
             <Input
               containerProps={{ marginBottom: 's' }}
@@ -146,7 +126,9 @@ function SettingsScreen() {
           <Button
             containerProps={{ marginBottom: 's' }}
             loading={loading}
-            onPress={handleUpdateProfile}
+            onPress={() => {
+              void handleUpdateProfile();
+            }}
             title="Update Profile"
           />
 

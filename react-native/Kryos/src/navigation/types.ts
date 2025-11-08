@@ -27,5 +27,6 @@ export type MainScreenProps<T extends keyof MainStackParamList> =
 
 export type MainStackParamList = {
   NewPost: undefined;
+  PostDetail: { postId: string };
   Tab: NavigatorScreenParams<TabParamList>;
 };

@@ -12,7 +12,7 @@ export type SearchInputProps = {
 
 // Search Input Component
 export const SearchInput = forwardRef<RNTextInput, SearchInputProps>(
-  ({ onSearch = undefined, ...props }, reference) => {
+  ({ onSearch, ...props }, reference) => {
     return (
       <Input
         clearable
@@ -35,5 +35,8 @@ export const SearchInput = forwardRef<RNTextInput, SearchInputProps>(
 );
 
 SearchInput.displayName = 'SearchInput';
+SearchInput.defaultProps = {
+  onSearch: undefined,
+};
 
 export default SearchInput;

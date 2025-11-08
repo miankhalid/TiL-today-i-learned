@@ -28,7 +28,8 @@ instance.interceptors.request.use(
     return config;
   },
   (error) => {
-    return Promise.reject(error);
+    const errorToReturn = error instanceof Error ? error : new Error('An error occurred');
+    return Promise.reject(errorToReturn);
   },
 );
 

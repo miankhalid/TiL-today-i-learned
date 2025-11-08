@@ -32,7 +32,7 @@ export const fetchUserProfile = async (): Promise<null | Profile> => {
     .from('profiles')
     .select('username, full_name, avatar_url, website, updated_at')
     .eq('id', userId)
-    .single();
+    .single<Record<string, unknown>>();
 
   if (error && error.code !== 'PGRST116') { // PGRST116 is "Row not found"
     console.error('Error fetching profile:', error);
@@ -54,9 +54,13 @@ export const fetchUserProfile = async (): Promise<null | Profile> => {
 
   // Return profile data combined with user email
   return {
-    ...data,
+    avatar_url: typeof data.avatar_url === 'string' || data.avatar_url === null ? data.avatar_url : null,
     email: userEmail,
+    full_name: typeof data.full_name === 'string' || data.full_name === null ? data.full_name : null,
     id: userId,
+    updated_at: typeof data.updated_at === 'string' || data.updated_at === null ? data.updated_at : null,
+    username: typeof data.username === 'string' || data.username === null ? data.username : null,
+    website: typeof data.website === 'string' || data.website === null ? data.website : null,
   };
 };
 
@@ -78,7 +82,7 @@ export const updateProfile = async (profileData: UpdateProfileData): Promise<Pro
     .from('profiles')
     .select('id')
     .eq('id', userId)
-    .single();
+    .single<Record<string, unknown>>();
 
   let upsertResult;
   if (fetchError?.code === 'PGRST116') {
@@ -87,7 +91,7 @@ export const updateProfile = async (profileData: UpdateProfileData): Promise<Pro
       .from('profiles')
       .insert([{ id: userId, ...profileData }])
       .select()
-      .single();
+      .single<Record<string, unknown>>();
   } else {
     // Profile exists, update it
     upsertResult = await supabase
@@ -95,7 +99,7 @@ export const updateProfile = async (profileData: UpdateProfileData): Promise<Pro
       .update(profileData)
       .eq('id', userId)
       .select()
-      .single();
+      .single<Record<string, unknown>>();
   }
 
   if (upsertResult.error) {
@@ -105,7 +109,12 @@ export const updateProfile = async (profileData: UpdateProfileData): Promise<Pro
 
   // Return updated profile data with email
   return {
-    ...upsertResult.data,
+    avatar_url: typeof upsertResult.data?.avatar_url === 'string' || upsertResult.data?.avatar_url === null ? upsertResult.data.avatar_url : null,
     email: userEmail,
+    full_name: typeof upsertResult.data?.full_name === 'string' || upsertResult.data?.full_name === null ? upsertResult.data.full_name : null,
+    id: userId,
+    updated_at: typeof upsertResult.data?.updated_at === 'string' || upsertResult.data?.updated_at === null ? upsertResult.data.updated_at : null,
+    username: typeof upsertResult.data?.username === 'string' || upsertResult.data?.username === null ? upsertResult.data.username : null,
+    website: typeof upsertResult.data?.website === 'string' || upsertResult.data?.website === null ? upsertResult.data.website : null,
   };
 };

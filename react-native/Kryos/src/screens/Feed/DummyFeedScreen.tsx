@@ -15,8 +15,13 @@ import { Post } from '@/types/types';
 
 import avatarPlaceholder from '../../theme/assets/images/default_avatar.png';
 
-function FeedScreen({ navigation }: AuthScreenProps<'Feed'>) {
-  const renderPost = ({ item }: { item: Post }) => (
+function FeedScreen({ navigation }: { navigation: AuthScreenProps<'Feed'>['navigation'] }) {
+  const renderPost = ({ item }: { item: Post }): JSX.Element => {
+    const imageSource: ImageSourcePropType = item.user?.image
+      ? { uri: item.user.image }
+      : avatarPlaceholder;
+
+    return (
     <Box
       borderBottomColor="borderDefault"
       borderBottomWidth={1}
@@ -28,7 +33,7 @@ function FeedScreen({ navigation }: AuthScreenProps<'Feed'>) {
           borderRadius="round"
           height={40}
           marginRight="s"
-          source={{ uri: item.user?.image ?? avatarPlaceholder }}
+          source={imageSource}
           width={40}
         />
         <Box flex={1}>
@@ -45,7 +50,8 @@ function FeedScreen({ navigation }: AuthScreenProps<'Feed'>) {
         {item.created_at}
       </Text>
     </Box>
-  );
+    );
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>

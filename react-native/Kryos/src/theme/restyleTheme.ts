@@ -108,8 +108,9 @@ const baseTheme = {
     ...palette,
     // Background colors
     bgBackground: palette.background,
+    bgCard: palette.white,
     bgPrimary: palette.primary,
-    bgSecondary: palette.secondary,
+    bgSecondary: palette.gray1,
     bgSurface: palette.surface,
 
     // Text colors
@@ -190,6 +191,8 @@ const darkTheme: Theme = {
     ...theme.colors,
     // Background colors
     bgBackground: palette.black,
+    bgCard: palette.gray8,
+    bgSecondary: palette.gray7,
     bgSurface: palette.gray9,
 
     // Text colors

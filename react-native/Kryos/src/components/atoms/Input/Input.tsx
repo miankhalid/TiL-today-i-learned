@@ -33,18 +33,18 @@ export type InputProps = {
 export const Input = forwardRef<RNTextInput, InputProps>(
   (
     {
-      characterLimit = undefined,
-      clearable = false,
-      containerProps = {},
+      characterLimit,
+      clearable,
+      containerProps,
       editable = true,
-      error = undefined,
-      hint = undefined,
-      label = undefined,
-      leftIcon = undefined,
+      error,
+      hint,
+      label,
+      leftIcon,
       onChangeText,
-      rightIcon = undefined,
+      rightIcon,
       value,
-      variant = 'outlined',
+      variant,
       ...props
     },
     reference,
@@ -178,5 +178,16 @@ export const Input = forwardRef<RNTextInput, InputProps>(
 );
 
 Input.displayName = 'Input';
+Input.defaultProps = {
+  characterLimit: undefined,
+  clearable: false,
+  containerProps: {},
+  error: undefined,
+  hint: undefined,
+  label: undefined,
+  leftIcon: undefined,
+  rightIcon: undefined,
+  variant: 'outlined',
+};
 
 export default Input;

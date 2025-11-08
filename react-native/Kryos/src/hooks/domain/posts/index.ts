@@ -18,34 +18,34 @@ export const usePost = (postId: string) => {
 
 export const useCreatePost = () => {
   const queryClient = useQueryClient();
-  
+
   return useMutation({
     mutationFn: async (postData) => await PostServices.create(postData),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['posts'] });
+      void queryClient.invalidateQueries({ queryKey: ['posts'] });
     },
   });
 };
 
 export const useUpdatePost = () => {
   const queryClient = useQueryClient();
-  
+
   return useMutation({
-    mutationFn: async ({ postData, postId }: { postData: Partial<{ content: string; parent_id: string }>; postId: string; }) => 
+    mutationFn: async ({ postData, postId }: { postData: Partial<{ content: string; parent_id: string }>; postId: string; }) =>
       await PostServices.update(postId, postData),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['posts'] });
+      void queryClient.invalidateQueries({ queryKey: ['posts'] });
     },
   });
 };
 
 export const useDeletePost = () => {
   const queryClient = useQueryClient();
-  
+
   return useMutation({
     mutationFn: async (postId) => await PostServices.delete(postId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['posts'] });
+      void queryClient.invalidateQueries({ queryKey: ['posts'] });
     },
   });
 };

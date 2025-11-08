@@ -21,8 +21,15 @@ export const PostServices = {
   },
 
   fetchAll: async (): Promise<Post[]> => {
-    const response = await instance.get<Post[]>(POSTS_API.GET_ALL());
-    return response.data;
+    const endpoint = POSTS_API.GET_ALL();
+    
+    try {
+      const response = await instance.get<Post[]>(endpoint);
+      return response.data;
+    } catch (error) {
+      console.error('[PostServices] fetchAll - Error:', error);
+      throw error;
+    }
   },
 
   fetchById: async (postId: string): Promise<Post> => {
@@ -61,3 +68,5 @@ export const PostServices = {
     return response.data;
   },
 };
+export type { Post };
+

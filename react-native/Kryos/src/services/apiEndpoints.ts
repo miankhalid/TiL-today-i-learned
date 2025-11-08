@@ -6,13 +6,13 @@ export const POSTS_API = {
   BASE: '/posts',
   
   // Get all posts
-  GET_ALL: () => '/posts?select=*,profiles!inner(*)&order=created_at.desc',
+  GET_ALL: () => '/posts?select=*,profiles(*),replies:posts(count)&parent_id=is.null&order=created_at.desc',
   
   // Get posts by user
   GET_BY_USER: (userId: string) => `/posts?select=*,profiles!inner(*)&user_id=eq.${userId}`,
   
   // Get single post by ID
-  GET_BY_ID: (postId: string) => `/posts?select=*,profiles!inner(*)&id=eq.${postId}`,
+  GET_BY_ID: (postId: string) => `posts?select=*,profiles(*),replies:posts(count)&parent_id=eq.${postId}&order=created_at.asc`,
   
   // Create a new post
   CREATE: () => '/posts',
@@ -23,11 +23,14 @@ export const POSTS_API = {
   // Delete a post
   DELETE: (postId: string) => `/posts?id=eq.${postId}`,
   
-  // Get comments for a post
-  GET_COMMENTS: (postId: string) => `/comments?post_id=eq.${postId}&select=*,profiles!inner(*)`,
+  // Get comments for a post (replies are posts with parent_id)
+  GET_COMMENTS: (postId: string) => `/posts?parent_id=eq.${postId}&select=*,profiles!inner(*)&order=created_at.desc`,
   
-  // Add a comment to a post
-  ADD_COMMENT: () => '/comments',
+  // Get count of comments for a post
+  GET_COMMENTS_COUNT: (postId: string) => `/posts?parent_id=eq.${postId}`,
+  
+  // Add a comment to a post (reply is a post with parent_id)
+  ADD_COMMENT: () => '/posts',
   
   // Like a post
   LIKE_POST: () => '/post_likes',

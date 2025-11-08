@@ -87,7 +87,9 @@ function NewPostScreen({ navigation }: MainScreenProps<'NewPost'>) {
             containerProps={{ marginLeft: 's' }}
             disabled={isLoading || !content.trim() || !canPost}
             loading={isLoading}
-            onPress={handleCreatePost}
+            onPress={() => {
+              void handleCreatePost();
+            }}
             title="Post"
           />
           <Button

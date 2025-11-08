@@ -23,20 +23,12 @@ function TabNavigator() {
         headerShown: false,
         tabBarActiveTintColor: colors.bgPrimary,  // primary color from theme
         tabBarIcon: ({ color, focused, size }) => {
-          let iconName = '';
-          switch (route.name as string) {
-            case Paths.Create:
-              iconName = focused ? 'add-card' : 'add-card';
-              break;
-            case Paths.Feeds:
-              iconName = focused ? 'forum' : 'forum';
-              break;
-            case Paths.Settings:
-              iconName = focused ? 'account-circle' : 'account-circle';
-              break;
-            default:
-              iconName = 'help';
-          }
+          const iconMap: Record<keyof TabParamList, string> = {
+            Create: focused ? 'add-card' : 'add-card',
+            Feeds: focused ? 'forum' : 'forum',
+            Settings: focused ? 'account-circle' : 'account-circle',
+          };
+          const iconName = iconMap[route.name] || 'help';
 
           // You can return any component that you like
           return <MaterialIcons color={color} name={iconName} size={size} />;

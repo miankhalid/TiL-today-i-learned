@@ -3,6 +3,7 @@ import type { MainStackParamList } from './types';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import NewPostScreen from '@/screens/NewPost/NewPostScreen';
+import PostDetailScreen from '@/screens/PostDetail/PostDetailScreen';
 
 import TabNavigator from './TabNavigator';
 
@@ -16,6 +17,7 @@ function MainNavigator() {
     >
       <Stack.Screen component={TabNavigator} name="Tab" />
       <Stack.Screen component={NewPostScreen} name="NewPost" />
+      <Stack.Screen component={PostDetailScreen} name="PostDetail" />
     </Stack.Navigator>
   );
 }

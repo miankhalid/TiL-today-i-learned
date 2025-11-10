@@ -2,6 +2,7 @@ import type { User as SupabaseUser } from '@supabase/supabase-js';
 
 export type CreatePostData = {
   content: string;
+  images?: string[];
   parentId?: null | string;
   userId: string;
 };
@@ -20,6 +21,7 @@ export type Post = {
   content: string;
   created_at: string;
   id: string;
+  images?: null | string[];
   parent: null | Post; // For replies, though not fully implemented yet
   parent_id: null | string;
   replies?: Post[]; // Array of replies

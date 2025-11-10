@@ -6,6 +6,7 @@ export const postSchema = z.object({
   content: z.string().min(1).max(MAX_CONTENT_CHARS),
   created_at: z.string(), // Accept any string format for datetime, since Supabase may return different formats
   id: z.string().uuid(),
+  images: z.array(z.string().url()).nullable().optional(),
   parent: z.any().nullable().optional(), // This could be expanded with a recursive reference if needed
   parent_id: z.string().uuid().nullable().optional(),
   replies: z.array(z.any()).optional(), // This could be expanded with proper reply schema
@@ -25,11 +26,13 @@ export const createPostSchema = postSchema
   .omit({
     created_at: true,
     id: true,
+    images: true,
     parent: true,
     replies: true,
     user: true,
   })
   .extend({
+    images: z.array(z.string().url()).optional(),
     parent_id: z.string().uuid().nullable().optional(),
   });
 

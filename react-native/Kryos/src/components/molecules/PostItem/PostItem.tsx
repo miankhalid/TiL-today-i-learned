@@ -6,6 +6,7 @@ import { Post } from '@/hooks/domain/posts/postService';
 
 import Avatar from '@/components/atoms/Avatar/Avatar';
 import Box from '@/components/atoms/Box';
+import Image from '@/components/atoms/Image';
 import Text from '@/components/atoms/Text';
 
 type PostItemProps = {
@@ -67,6 +68,21 @@ const PostItem = ({
         <Text marginBottom="s" variant="body">
           {post.content}
         </Text>
+        {post.images?.length > 0 ?
+          <Box flexDirection="row" justifyContent="flex-start" marginBottom='s'>
+            {post.images.map((image, index) => (
+              <Image
+                height={100}
+                key={index}
+                margin="s"
+                resizeMethod="scale"
+                resizeMode="cover"
+                source={{ uri: image }}
+                width={100}
+              />
+            ))}
+          </Box> : null
+        }
         <Box
           alignItems="center"
           flexDirection="row"

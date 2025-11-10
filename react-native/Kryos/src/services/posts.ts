@@ -13,6 +13,7 @@ export const createPostWithRestAPI = async (
   // Validate input data
   const validatedData = validateCreatePost({
     content: postData.content,
+    images: postData.images,
     parent_id: postData.parentId ?? null,
     user_id: postData.userId,
   });
@@ -35,6 +36,7 @@ export const createPostWithRestAPI = async (
       content: typeof postDataResult.content === 'string' ? postDataResult.content : '',
       created_at: typeof postDataResult.created_at === 'string' ? postDataResult.created_at : new Date().toISOString(),
       id: typeof postDataResult.id === 'string' ? postDataResult.id : '',
+      images: postDataResult.images as null | string[],
       parent: null, // Will be populated if needed
       parent_id: typeof postDataResult.parent_id === 'string' ? postDataResult.parent_id : null,
       replies: [], // Will be populated if needed
@@ -71,6 +73,7 @@ export const fetchPostsFromRestAPI = async (): Promise<Post[]> => {
         content: typeof post.content === 'string' ? post.content : '',
         created_at: typeof post.created_at === 'string' ? post.created_at : new Date().toISOString(),
         id: typeof post.id === 'string' ? post.id : '',
+        images: post.images as null | string[],
         parent: post.parent ?? null,
         parent_id: typeof post.parent_id === 'string' ? post.parent_id : null,
         replies: Array.isArray(post.replies) ? post.replies : [],
@@ -110,6 +113,7 @@ export const fetchPostsByUserFromRestAPI = async (
         content: typeof post.content === 'string' ? post.content : '',
         created_at: typeof post.created_at === 'string' ? post.created_at : new Date().toISOString(),
         id: typeof post.id === 'string' ? post.id : '',
+        images: post.images as null | string[],
         parent: post.parent ?? null,
         parent_id: typeof post.parent_id === 'string' ? post.parent_id : null,
         replies: Array.isArray(post.replies) ? post.replies : [],
@@ -149,6 +153,7 @@ export const fetchPostByIdFromRestAPI = async (
       content: typeof post.content === 'string' ? post.content : '',
       created_at: typeof post.created_at === 'string' ? post.created_at : new Date().toISOString(),
       id: typeof post.id === 'string' ? post.id : '',
+      images: post.images as null | string[],
       parent: post.parent ?? null,
       parent_id: typeof post.parent_id === 'string' ? post.parent_id : null,
       replies: Array.isArray(post.replies) ? post.replies : [],

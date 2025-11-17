@@ -10,15 +10,21 @@ import fr from './fr-FR.json';
 
 export const defaultNS = 'kryos';
 
+// IMPORTANT:
+// this was very important to make sure key doesn't appear instead of the translation
 export const resources = {
-  'en-EN': en,
-  'fr-FR': fr,
+  'en-EN': {
+    kryos: en,
+  },
+  'fr-FR': {
+    kryos: fr,
+  },
 } as const satisfies Record<Language, unknown>;
 
 void i18n.use(initReactI18next).init({
   defaultNS,
-  fallbackLng: 'fr-FR',
-  lng: 'fr-FR',
+  fallbackLng: 'en-EN',
+  lng: 'en-EN',
   resources,
 });
 
@@ -29,4 +35,4 @@ i18n.services.formatter?.add(
     value.charAt(0).toUpperCase() + value.slice(1).toLowerCase(),
 );
 
-export { default } from 'i18next';
+export default i18n;

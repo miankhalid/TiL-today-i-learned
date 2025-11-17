@@ -79,3 +79,12 @@ yarn-error.log
 
 # vscode
 .vscode/*
+
+# sample app folder ignore
+/sample
+
+# LLMs
+GEMINI.md
+QWEN.md
+/.gemini
+/.qwen
